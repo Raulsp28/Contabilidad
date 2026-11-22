@@ -993,6 +993,8 @@
     const STORAGE_KEY = "contabilidad_app_state_v3";
     const LEGACY_STORAGE_KEYS = ["contabilidad_app_state_v2", "contabilidad_app_state_v1", "contabilidad_2026_state"];
     const LAST_TAB_KEY = "contabilidad_last_active_tab";
+    const LAST_MONTH_KEY = "contabilidad_last_selected_month";
+    const LAST_SCROLL_KEY = "contabilidad_last_scroll_map";
     const THEME_MODE_KEY = "contabilidad_theme_mode";
     const GDRIVE_TOKEN_KEY = "contabilidad_gdrive_token_v3";
     const GDRIVE_HINT_KEY = "contabilidad_gdrive_login_hint";
@@ -1149,10 +1151,49 @@
     /* ==========================================================================
        2. ESTADO GLOBAL Y NORMALIZACIÓN
        ========================================================================== */
+    function getInitialSavedTab() {
+      const hashTab = (window.location.hash || "").replace(/^#/, "").trim();
+      if (TAB_TITLES[hashTab]) return hashTab;
+      try {
+        const storedTab = localStorage.getItem(LAST_TAB_KEY);
+        if (storedTab && TAB_TITLES[storedTab]) return storedTab;
+      } catch (e) {}
+      return "dashboard";
+    }
+
+    function getInitialSavedMonth() {
+      try {
+        const raw = localStorage.getItem(LAST_MONTH_KEY);
+        if (raw !== null) {
+          const m = Number(raw);
+          if (!isNaN(m) && m >= 0 && m <= 12) return m;
+        }
+      } catch (e) {}
+      return 0;
+    }
+
+    function saveScrollPositionForTab(tabName) {
+      try {
+        const map = JSON.parse(localStorage.getItem(LAST_SCROLL_KEY) || "{}");
+        map[tabName] = Math.round(window.scrollY || window.pageYOffset || 0);
+        localStorage.setItem(LAST_SCROLL_KEY, JSON.stringify(map));
+      } catch (e) {}
+    }
+
+    function restoreScrollPositionForTab(tabName) {
+      try {
+        const map = JSON.parse(localStorage.getItem(LAST_SCROLL_KEY) || "{}");
+        const targetY = Number(map[tabName]) || 0;
+        requestAnimationFrame(() => {
+          window.scrollTo({ top: targetY, behavior: "instant" });
+          setTimeout(() => window.scrollTo(0, targetY), 80);
+        });
+      } catch (e) {}
+    }
+
     let appState = null;
-    let activeTab = localStorage.getItem(LAST_TAB_KEY) || "dashboard";
-    if (!TAB_TITLES[activeTab]) activeTab = "dashboard";
-    let selectedMonth = 0;
+    let activeTab = getInitialSavedTab();
+    let selectedMonth = getInitialSavedMonth();
     let hasUserEditedLocally = false;
     let chartMonthly = null;
     let chartCategories = null;
@@ -1779,6 +1820,7 @@
             saveState(true);
             syncYearSelectors();
             renderAll();
+            restoreScrollPositionForTab(activeTab);
             if (hadOldSecurity) {
               await uploadToGoogleDrive();
             }
@@ -1899,11 +1941,19 @@
     /* ==========================================================================
        5. NAVEGACIÓN Y MENÚ HAMBURGUESA
        ========================================================================== */
-    function switchTab(tabName) {
+    function switchTab(tabName, isInitialRestore = false) {
+      if (!isInitialRestore && activeTab) {
+        saveScrollPositionForTab(activeTab);
+      }
       const targetTab = TAB_TITLES[tabName] ? tabName : "dashboard";
       activeTab = targetTab;
       try {
         localStorage.setItem(LAST_TAB_KEY, targetTab);
+        if (window.history && typeof window.history.replaceState === "function") {
+          window.history.replaceState(null, "", `#${targetTab}`);
+        } else {
+          window.location.hash = targetTab;
+        }
       } catch (e) {}
 
       const views = ["dashboard", "transactions", "shared", "accounts", "savings", "categories", "backup"];
@@ -1923,6 +1973,7 @@
 
       closeDrawer();
       renderAll();
+      restoreScrollPositionForTab(targetTab);
     }
 
     function openDrawer() {
@@ -2671,8 +2722,20 @@
       initTheme();
       loadInitialState();
       syncYearSelectors();
-      switchTab(activeTab);
+      switchTab(activeTab, true);
       initGoogleDriveAutoReconnect();
+
+      let scrollSaveTimer = null;
+      window.addEventListener("scroll", () => {
+        clearTimeout(scrollSaveTimer);
+        scrollSaveTimer = setTimeout(() => saveScrollPositionForTab(activeTab), 150);
+      }, { passive: true });
+      window.addEventListener("pagehide", () => saveScrollPositionForTab(activeTab));
+      document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === "hidden") {
+          saveScrollPositionForTab(activeTab);
+        }
+      });
 
       document.getElementById("btn-theme-toggle").addEventListener("click", () => {
         const currentMode = localStorage.getItem(THEME_MODE_KEY) || "system";
@@ -2738,6 +2801,9 @@
 
       document.getElementById("month-selector").addEventListener("change", (e) => {
         selectedMonth = Number(e.target.value) || 0;
+        try {
+          localStorage.setItem(LAST_MONTH_KEY, String(selectedMonth));
+        } catch (err) {}
         renderAll();
       });
 
