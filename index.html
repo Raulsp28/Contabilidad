@@ -1201,6 +1201,7 @@
         accountKeys: ["Caixabank", "Trade Rep", "Bankinter", "Bbva", "Openbank", "Revolut", "ING", "Efectivo"],
         visibleSummaryAccounts: ["Caixabank", "Trade Rep", "Bbva", "Efectivo"],
         visibleAccountKeys: ["Caixabank", "Trade Rep", "Bankinter", "Bbva", "Openbank", "Revolut", "Efectivo"],
+        showSharedChipInTx: true,
         visiblePaymentMethods: ["Efectivo", "Caixabank", "Bbva", "Caixa MyCard", "Tarjeta Bbva", "Tarjeta ECI", "Visa Pass", "Openbank", "Trade Republic"],
         interestColumns: [
           { key: "tr", label: "Trade Republic" },
@@ -1268,6 +1269,7 @@
           accountKeys: Array.isArray(raw.accountKeys) && raw.accountKeys.length ? raw.accountKeys : base.accountKeys,
           visibleSummaryAccounts: Array.isArray(raw.visibleSummaryAccounts) ? raw.visibleSummaryAccounts : (Array.isArray(raw.accountKeys) ? raw.accountKeys : base.visibleSummaryAccounts),
           visibleAccountKeys: Array.isArray(raw.visibleAccountKeys) ? raw.visibleAccountKeys : (Array.isArray(raw.accountKeys) ? raw.accountKeys : base.visibleAccountKeys),
+          showSharedChipInTx: raw.showSharedChipInTx !== false,
           visiblePaymentMethods: Array.isArray(raw.visiblePaymentMethods) ? raw.visiblePaymentMethods : (Array.isArray(raw.paymentMethods) ? raw.paymentMethods : base.visiblePaymentMethods),
           interestColumns: Array.isArray(raw.interestColumns) ? raw.interestColumns : base.interestColumns,
           shareTags: Array.isArray(raw.shareTags) && raw.shareTags.length ? raw.shareTags : base.shareTags,
@@ -1803,11 +1805,34 @@
         ? state.visibleAccountKeys.filter(a => (state.accountKeys || []).includes(a))
         : (state.accountKeys || []);
 
-      document.getElementById("tx-accounts-strip").innerHTML = visTxAccs
-        .map(accKey => renderUnifiedAccountChip(accKey, true))
-        .join("");
-
       const allMonthRows = getMonthTxRows(selectedYear, selectedMonth);
+
+      let sharedChipHtml = "";
+      if (state.showSharedChipInTx !== false) {
+        const monthSharedRows = allMonthRows.filter(r => isSharedRow(r) && !isTransferRow(r));
+        const sharedTotal = monthSharedRows.reduce((s, r) => s + Math.abs(Number(r[7]) || 0), 0);
+        const sharedHalf = sharedTotal / 2;
+        sharedChipHtml = `
+          <div class="acc-chip" onclick="switchTab('shared')" title="Ver detalle de Gastos Comunes">
+            <div class="acc-chip-name">
+              <span>🤝 Gastos Comunes</span>
+            </div>
+            <div class="acc-chip-val text-danger">${formatEUR(sharedTotal)}</div>
+            <div class="acc-chip-line">
+              <span class="text-muted">Movimientos (${monthSharedRows.length}):</span>
+              <span style="font-weight:700;">50%</span>
+            </div>
+            <div class="acc-chip-line">
+              <span style="font-weight:700;">Tu mitad:</span>
+              <span class="text-primary" style="font-weight:800;">${formatEUR(sharedHalf)}</span>
+            </div>
+          </div>
+        `;
+      }
+
+      document.getElementById("tx-accounts-strip").innerHTML =
+        visTxAccs.map(accKey => renderUnifiedAccountChip(accKey, true)).join("") + sharedChipHtml;
+
       const tagSel = document.getElementById("tx-filter-tag");
       const prevTag = tagSel.value || "all";
       tagSel.innerHTML = `<option value="all">Todas etiquetas</option>` +
@@ -2158,13 +2183,19 @@
     function openVisibilityModal() {
       const allAccs = state.accountKeys || [];
       const txAccs = state.visibleAccountKeys || allAccs;
+      const showShared = state.showSharedChipInTx !== false;
 
       document.getElementById("vis-tx-accounts-list").innerHTML = allAccs.map(k => `
         <label class="check-item">
           <input type="checkbox" class="chk-vis-tx-acc" value="${escapeAttr(k)}" ${txAccs.includes(k) ? "checked" : ""} />
-          <span>${escapeHtml(k)}</span>
+          <span>🏦 ${escapeHtml(k)}</span>
         </label>
-      `).join("");
+      `).join("") + `
+        <label class="check-item">
+          <input type="checkbox" id="chk-vis-tx-shared" ${showShared ? "checked" : ""} />
+          <span>🤝 Gastos Comunes</span>
+        </label>
+      `;
 
       document.getElementById("visibility-modal-backdrop").classList.add("open");
     }
@@ -2175,6 +2206,8 @@
 
     function saveVisibilitySettings() {
       state.visibleAccountKeys = Array.from(document.querySelectorAll(".chk-vis-tx-acc:checked")).map(el => el.value);
+      const sharedChk = document.getElementById("chk-vis-tx-shared");
+      state.showSharedChipInTx = sharedChk ? sharedChk.checked : true;
       saveState();
       closeVisibilityModal();
       renderAll();
