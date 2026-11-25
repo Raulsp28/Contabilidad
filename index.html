@@ -25,7 +25,7 @@
       --accent: #8b5cf6;
       --shadow: 0 2px 10px rgba(15, 23, 42, 0.06);
       --radius: 12px;
-      --header-h: 56px;
+      --header-h: 54px;
     }
 
     body.dark {
@@ -58,7 +58,7 @@
       padding-bottom: 40px;
     }
 
-    /* CABECERA */
+    /* CABECERA COMPACTA PEGADA A LA IZQUIERDA */
     .topbar {
       position: sticky;
       top: 0;
@@ -86,17 +86,17 @@
     .brand {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 7px;
       font-weight: 700;
-      font-size: 1rem;
+      font-size: 0.98rem;
       white-space: nowrap;
     }
 
     .brand-badge {
       background: var(--primary);
       color: #fff;
-      width: 30px;
-      height: 30px;
+      width: 28px;
+      height: 28px;
       border-radius: 8px;
       display: inline-flex;
       align-items: center;
@@ -124,20 +124,21 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
+      gap: 5px;
       border: 1px solid var(--border);
       background: var(--surface-alt);
       color: var(--text);
       border-radius: 8px;
-      padding: 7px 12px;
-      font-size: 0.85rem;
+      padding: 6px 11px;
+      font-size: 0.84rem;
       font-weight: 600;
       cursor: pointer;
       white-space: nowrap;
       transition: all 0.15s ease;
     }
     .btn:hover { filter: brightness(0.96); }
-    .btn-sm { padding: 5px 9px; font-size: 0.8rem; }
+    .btn-sm { padding: 5px 8px; font-size: 0.8rem; }
+    .btn-xs { padding: 3px 6px; font-size: 0.75rem; }
     .btn-primary { background: var(--primary); border-color: var(--primary); color: #fff; }
     .btn-primary:hover { background: var(--primary-hover); }
     .btn-success { background: var(--success); border-color: var(--success); color: #fff; }
@@ -150,8 +151,8 @@
       color: var(--text);
       border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 6px 10px;
-      font-size: 0.88rem;
+      padding: 6px 9px;
+      font-size: 0.86rem;
       outline: none;
     }
     select:focus, input:focus, textarea:focus {
@@ -180,7 +181,7 @@
       padding: 16px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 6px;
       transition: left 0.22s ease;
       box-shadow: 4px 0 24px rgba(0, 0, 0, 0.25);
     }
@@ -194,7 +195,7 @@
       cursor: pointer;
       text-align: left;
       padding: 11px 14px;
-      font-size: 0.95rem;
+      font-size: 0.94rem;
       transition: all 0.15s ease;
     }
     .mobile-drawer .nav-tab:hover { background: var(--surface-alt); color: var(--text); }
@@ -205,9 +206,9 @@
 
     /* CONTENEDOR Y TARJETAS */
     .container {
-      max-width: 1320px;
+      max-width: 1380px;
       margin: 0 auto;
-      padding: 16px;
+      padding: 14px;
     }
 
     .tab-panel { display: none; }
@@ -233,6 +234,12 @@
       gap: 12px;
       margin-bottom: 16px;
     }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 14px;
+    }
     .grid-2 {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -246,6 +253,7 @@
       border-radius: var(--radius);
       padding: 14px 16px;
       box-shadow: var(--shadow);
+      margin-bottom: 14px;
     }
     .card-header {
       display: flex;
@@ -261,14 +269,14 @@
     }
 
     .kpi-label {
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       color: var(--text-muted);
-      font-weight: 600;
+      font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.3px;
     }
     .kpi-value {
-      font-size: 1.42rem;
+      font-size: 1.38rem;
       font-weight: 800;
       margin-top: 4px;
     }
@@ -281,7 +289,74 @@
     .text-success { color: var(--success); }
     .text-danger { color: var(--danger); }
     .text-primary { color: var(--primary); }
+    .text-warning { color: var(--warning); }
     .text-muted { color: var(--text-muted); }
+
+    /* PASTILLAS UNIFICADAS DE CUENTAS Y TARJETAS */
+    .accounts-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
+      gap: 9px;
+    }
+    .acc-chip {
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      cursor: pointer;
+      transition: border-color 0.15s ease, transform 0.1s ease;
+    }
+    .acc-chip:hover {
+      border-color: var(--primary);
+    }
+    .acc-chip.selected-filter {
+      border: 2px solid var(--primary);
+      background: rgba(37, 99, 235, 0.08);
+    }
+    .acc-chip-name {
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--text);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 4px;
+    }
+    .acc-chip-val {
+      font-size: 1.06rem;
+      font-weight: 800;
+      margin-top: 3px;
+    }
+    .acc-chip-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.74rem;
+      margin-top: 4px;
+      padding-top: 4px;
+      border-top: 1px dashed var(--border);
+    }
+    .acc-chip-sub {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+
+    /* BLOQUES 60 / 20 / 20 */
+    .rule-box {
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+    }
+    .rule-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 800;
+      font-size: 0.88rem;
+      margin-bottom: 6px;
+    }
 
     /* TABLAS */
     .table-wrap {
@@ -293,10 +368,10 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.86rem;
+      font-size: 0.85rem;
     }
     th, td {
-      padding: 9px 10px;
+      padding: 8px 10px;
       border-bottom: 1px solid var(--border);
       text-align: left;
       white-space: nowrap;
@@ -305,30 +380,33 @@
       background: var(--surface-alt);
       font-weight: 700;
       color: var(--text-muted);
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       text-transform: uppercase;
     }
     tr:last-child td { border-bottom: none; }
     tr:hover td { background: var(--surface-alt); }
+    tr.active-month-row td {
+      background: rgba(37, 99, 235, 0.08);
+      font-weight: 600;
+    }
 
     .num { text-align: right; font-variant-numeric: tabular-nums; }
     .cell-num-input {
-      width: 96px;
+      width: 86px;
       text-align: right;
       padding: 4px 6px;
-      font-size: 0.84rem;
+      font-size: 0.82rem;
     }
 
     .badge {
       display: inline-block;
-      padding: 2px 8px;
+      padding: 2px 7px;
       border-radius: 999px;
-      font-size: 0.75rem;
+      font-size: 0.73rem;
       font-weight: 700;
     }
-    .badge-income { background: var(--success-bg); color: var(--success); }
-    .badge-expense { background: var(--danger-bg); color: var(--danger); }
-    .badge-transfer { background: var(--warning-bg); color: var(--warning); }
+    .badge-tag { background: var(--surface-alt); border: 1px solid var(--border); color: var(--text-muted); }
+    .badge-method { background: rgba(37, 99, 235, 0.12); color: var(--primary); }
 
     /* BARRA PROGRESO */
     .progress-track {
@@ -343,6 +421,28 @@
       height: 100%;
       background: linear-gradient(90deg, #10b981, #3b82f6);
       transition: width 0.3s ease;
+    }
+    .progress-fill.over {
+      background: linear-gradient(90deg, #f59e0b, #ef4444);
+    }
+
+    /* CHECKBOX LIST */
+    .check-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin-top: 6px;
+    }
+    .check-item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 9px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface-alt);
+      font-size: 0.84rem;
+      cursor: pointer;
     }
 
     /* MODO PRIVACIDAD */
@@ -373,10 +473,10 @@
       border: 1px solid var(--border);
       border-radius: 14px;
       width: 100%;
-      max-width: 480px;
+      max-width: 500px;
       padding: 18px;
       box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
-      max-height: 90vh;
+      max-height: 92vh;
       overflow-y: auto;
     }
     .modal-header {
@@ -389,10 +489,10 @@
       display: flex;
       flex-direction: column;
       gap: 5px;
-      margin-bottom: 12px;
+      margin-bottom: 11px;
     }
     .form-group label {
-      font-size: 0.82rem;
+      font-size: 0.8rem;
       font-weight: 600;
       color: var(--text-muted);
     }
@@ -424,6 +524,7 @@
 
     @media (max-width: 900px) {
       .grid-4 { grid-template-columns: repeat(2, 1fr); }
+      .grid-3 { grid-template-columns: 1fr; }
       .grid-2 { grid-template-columns: 1fr; }
     }
     @media (max-width: 720px) {
@@ -433,12 +534,13 @@
       .topbar .btn-sm { padding: 6px 8px; font-size: 0.8rem; }
       .grid-4 { grid-template-columns: 1fr 1fr; gap: 8px; }
       .kpi-value { font-size: 1.15rem; }
+      .accounts-strip { grid-template-columns: repeat(2, 1fr); gap: 8px; }
     }
   </style>
 </head>
 <body class="privacy-masked">
 
-  <!-- CABECERA PRINCIPAL -->
+  <!-- CABECERA PRINCIPAL COMPACTA A LA IZQUIERDA -->
   <header class="topbar">
     <div class="topbar-left">
       <button type="button" id="btn-mobile-menu" class="hamburger-btn" aria-label="Menú">☰</button>
@@ -463,14 +565,16 @@
   <div class="drawer-backdrop" id="drawer-backdrop"></div>
   <aside class="mobile-drawer" id="mobile-drawer">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-      <strong>Navegación</strong>
+      <strong>Menú Contabilidad</strong>
       <button type="button" id="btn-close-drawer" class="btn btn-sm">✕</button>
     </div>
     <button type="button" class="nav-tab active" data-tab="dashboard">📊 Resumen</button>
     <button type="button" class="nav-tab" data-tab="transactions">💸 Movimientos</button>
-    <button type="button" class="nav-tab" data-tab="accounts">🏦 Cuentas e Intereses</button>
-    <button type="button" class="nav-tab" data-tab="annual">📅 Planificación Anual</button>
-    <button type="button" class="nav-tab" data-tab="goals">🎯 Metas y Ahorro</button>
+    <button type="button" class="nav-tab" data-tab="shared">🤝 Gastos Comunes</button>
+    <button type="button" class="nav-tab" data-tab="accounts">🏦 Cuentas e Historial</button>
+    <button type="button" class="nav-tab" data-tab="cards">💳 Tarjetas y Métodos</button>
+    <button type="button" class="nav-tab" data-tab="annual">📅 Categorías y Anual</button>
+    <button type="button" class="nav-tab" data-tab="goals">🎯 Ahorro e Intereses</button>
     <button type="button" class="nav-tab" data-tab="sync">☁️ Datos y Drive</button>
   </aside>
 
@@ -485,40 +589,40 @@
     <!-- 1. RESUMEN -->
     <section id="tab-dashboard" class="tab-panel active">
       <div class="grid-4">
-        <div class="card">
-          <div class="kpi-label">Patrimonio Total</div>
+        <div class="card" style="margin-bottom:0;">
+          <div class="kpi-label">Patrimonio Total (<span id="kpi-month-name"></span>)</div>
           <div class="kpi-value text-primary" id="kpi-net-worth">•••• €</div>
-          <div class="kpi-sub" id="kpi-accounts-count">0 cuentas activas</div>
+          <div class="kpi-sub" id="kpi-accounts-count">0 cuentas</div>
         </div>
-        <div class="card">
+        <div class="card" style="margin-bottom:0;">
           <div class="kpi-label">Ingresos del Mes</div>
           <div class="kpi-value text-success" id="kpi-month-income">•••• €</div>
-          <div class="kpi-sub" id="kpi-month-income-sub">Movimientos + Fijos</div>
+          <div class="kpi-sub" id="kpi-month-income-sub">Nóminas y abonos</div>
         </div>
-        <div class="card">
-          <div class="kpi-label">Gastos del Mes</div>
+        <div class="card" style="margin-bottom:0;">
+          <div class="kpi-label">Gastos Reales del Mes</div>
           <div class="kpi-value text-danger" id="kpi-month-expense">•••• €</div>
-          <div class="kpi-sub" id="kpi-month-expense-sub">Movimientos del periodo</div>
+          <div class="kpi-sub" id="kpi-month-expense-sub">Sin contar traspasos</div>
         </div>
-        <div class="card">
+        <div class="card" style="margin-bottom:0;">
           <div class="kpi-label">Balance Neto Mes</div>
           <div class="kpi-value" id="kpi-month-balance">•••• €</div>
-          <div class="kpi-sub" id="kpi-savings-rate">Tasa de ahorro: 0%</div>
+          <div class="kpi-sub" id="kpi-savings-rate">Tasa de ahorro: ••%</div>
         </div>
       </div>
 
       <div class="grid-2">
-        <div class="card">
+        <div class="card" style="margin-bottom:0;">
           <div class="card-header">
             <span class="card-title">Evolución Mensual (<span id="chart-year-label"></span>)</span>
           </div>
-          <div style="height:260px;"><canvas id="chart-monthly"></canvas></div>
+          <div style="height:240px;"><canvas id="chart-monthly"></canvas></div>
         </div>
-        <div class="card">
+        <div class="card" style="margin-bottom:0;">
           <div class="card-header">
             <span class="card-title">Gastos por Categoría (Mes Activo)</span>
           </div>
-          <div style="height:260px;"><canvas id="chart-categories"></canvas></div>
+          <div style="height:240px;"><canvas id="chart-categories"></canvas></div>
         </div>
       </div>
 
@@ -532,10 +636,10 @@
             <thead>
               <tr>
                 <th>Fecha</th>
-                <th>Tipo</th>
+                <th>Categoría / Subcat.</th>
                 <th>Concepto</th>
-                <th>Categoría</th>
-                <th>Cuenta</th>
+                <th>Cuenta / Tarjeta</th>
+                <th>Etiqueta</th>
                 <th class="num">Importe</th>
               </tr>
             </thead>
@@ -545,21 +649,36 @@
       </div>
     </section>
 
-    <!-- 2. MOVIMIENTOS -->
+    <!-- 2. MOVIMIENTOS (CON PANEL UNIFICADO DE SALDOS DE CUENTAS Y TARJETAS ARRIBA) -->
     <section id="tab-transactions" class="tab-panel">
+      <div class="card" style="padding:11px 14px;">
+        <div class="card-header" style="margin-bottom:0;">
+          <span class="card-title" style="font-size:0.92rem;">🏦 Saldos de Cuentas y Tarjetas (<span id="tx-panel-period"></span>)</span>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <button type="button" class="btn btn-xs" id="btn-toggle-tx-cards-panel">👁️ Ocultar Cuentas/Tarjetas</button>
+            <button type="button" class="btn btn-xs" onclick="openVisibilityModal()">⚙️ Configurar visibles</button>
+            <button type="button" class="btn btn-xs" id="btn-clear-tx-method-filter" style="display:none;" onclick="clearTxMethodFilter()">✕ Quitar filtro</button>
+          </div>
+        </div>
+
+        <div id="tx-accounts-cards-body" style="margin-top:10px;">
+          <div class="accounts-strip" id="tx-accounts-strip"></div>
+        </div>
+      </div>
+
       <div class="card">
         <div class="card-header">
-          <span class="card-title">Movimientos del Periodo</span>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;">
-            <input type="text" id="tx-search" placeholder="Buscar concepto..." style="width:170px;" />
-            <select id="tx-filter-type">
-              <option value="all">Todos los tipos</option>
-              <option value="income">Ingresos</option>
-              <option value="expense">Gastos</option>
-              <option value="transfer">Transferencias</option>
+          <span class="card-title">Movimientos (<span id="tx-count-badge">0</span>)</span>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <input type="text" id="tx-search" placeholder="Buscar concepto..." style="width:155px;" />
+            <select id="tx-filter-category">
+              <option value="all">Todas las categorías</option>
             </select>
-            <select id="tx-filter-account">
-              <option value="all">Todas las cuentas</option>
+            <select id="tx-filter-method">
+              <option value="all">Todas las cuentas/tarjetas</option>
+            </select>
+            <select id="tx-filter-tag">
+              <option value="all">Todas etiquetas</option>
             </select>
             <button type="button" class="btn btn-primary btn-sm" onclick="openTxModal()">+ Nuevo</button>
           </div>
@@ -570,10 +689,11 @@
             <thead>
               <tr>
                 <th>Fecha</th>
-                <th>Tipo</th>
-                <th>Concepto</th>
                 <th>Categoría</th>
-                <th>Cuenta</th>
+                <th>Subcategoría</th>
+                <th>Concepto</th>
+                <th>Cuenta / Tarjeta</th>
+                <th>Etiqueta</th>
                 <th class="num">Importe</th>
                 <th class="num">Acciones</th>
               </tr>
@@ -584,54 +704,147 @@
       </div>
     </section>
 
-    <!-- 3. CUENTAS E INTERESES -->
-    <section id="tab-accounts" class="tab-panel">
-      <div class="card" style="margin-bottom:16px;">
+    <!-- 2B. GASTOS COMUNES -->
+    <section id="tab-shared" class="tab-panel">
+      <div class="grid-4">
+        <div class="card" style="margin-bottom:0;">
+          <div class="kpi-label">Total Gastos Comunes (<span id="shared-month-label"></span>)</div>
+          <div class="kpi-value text-danger" id="shared-month-total">•••• €</div>
+          <div class="kpi-sub" id="shared-month-count">0 movimientos comunes</div>
+        </div>
+        <div class="card" style="margin-bottom:0;">
+          <div class="kpi-label">Parte Correspondiente (50%)</div>
+          <div class="kpi-value text-primary" id="shared-month-half">•••• €</div>
+          <div class="kpi-sub">Mitad a liquidar del mes</div>
+        </div>
+        <div class="card" style="margin-bottom:0;">
+          <div class="kpi-label">Aportaciones Mensuales (<span id="shared-aport-month"></span>)</div>
+          <div class="kpi-value text-success" id="shared-aport-total">•••• €</div>
+          <div class="kpi-sub">Subcategoría Aportación</div>
+        </div>
+        <div class="card" style="margin-bottom:0;">
+          <div class="kpi-label">Acumulado Comunes (<span id="shared-year-label"></span>)</div>
+          <div class="kpi-value" id="shared-year-total">•••• €</div>
+          <div class="kpi-sub" id="shared-year-half">50% anual: •••• €</div>
+        </div>
+      </div>
+
+      <div class="card">
         <div class="card-header">
-          <span class="card-title">Mis Cuentas y Saldos</span>
-          <button type="button" class="btn btn-primary btn-sm" id="btn-add-account">+ Añadir Cuenta</button>
+          <span class="card-title">🤝 Movimientos de Gastos Comunes (<span id="shared-list-period"></span>)</span>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <select id="shared-scope-select">
+              <option value="month">Solo mes activo</option>
+              <option value="year">Todo el año</option>
+            </select>
+            <button type="button" class="btn btn-primary btn-sm" onclick="openNewSharedTxModal()">+ Gasto Común</button>
+          </div>
         </div>
         <div class="table-wrap">
           <table>
             <thead>
               <tr>
-                <th>Cuenta</th>
-                <th>Tipo</th>
-                <th class="num">Saldo Actual</th>
-                <th class="num">TAE (%)</th>
-                <th class="num">Interés Mensual Est.</th>
+                <th>Fecha</th>
+                <th>Categoría / Subcat.</th>
+                <th>Concepto</th>
+                <th>Cuenta / Tarjeta</th>
+                <th>Etiqueta</th>
+                <th class="num">Total</th>
+                <th class="num">50%</th>
                 <th class="num">Acciones</th>
               </tr>
             </thead>
-            <tbody id="accounts-table-body"></tbody>
-          </table>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-header">
-          <span class="card-title">Registro de Intereses Cobrados (<span id="interest-year-label"></span>)</span>
-          <button type="button" class="btn btn-success btn-sm" id="btn-apply-estimated-interest">⚡ Abonar interés estimado al mes activo</button>
-        </div>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr id="interest-matrix-head"></tr>
-            </thead>
-            <tbody id="interest-matrix-body"></tbody>
+            <tbody id="shared-table-body"></tbody>
           </table>
         </div>
       </div>
     </section>
 
-    <!-- 4. PLANIFICACIÓN ANUAL -->
+    <!-- 3. CUENTAS E HISTORIAL MENSUAL -->
+    <section id="tab-accounts" class="tab-panel">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Gestión de Cuentas Bancarias y Efectivo</span>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <button type="button" class="btn btn-primary btn-sm" id="btn-add-account-col">+ Nueva Cuenta</button>
+            <button type="button" class="btn btn-sm" onclick="openVisibilityModal()">👁️ Visibilidad de Cuentas</button>
+          </div>
+        </div>
+        <div class="table-wrap" style="margin-bottom:14px;">
+          <table>
+            <thead>
+              <tr>
+                <th>Cuenta</th>
+                <th class="num">Saldo Mes Activo (<span id="acc-list-month"></span>)</th>
+                <th>Visible en Movimientos</th>
+                <th class="num">Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="accounts-manage-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Historial de Saldos por Cuenta (<span id="accounts-year-label"></span>)</span>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <button type="button" class="btn btn-primary btn-sm" id="btn-copy-prev-month-balances">Copiar saldos mes anterior</button>
+          </div>
+        </div>
+        <p class="text-muted" style="font-size:0.8rem;margin-bottom:10px;">
+          Edita directamente cualquier celda para actualizar el saldo real de cada cuenta al cierre de cada mes.
+        </p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr id="accounts-history-head"></tr>
+            </thead>
+            <tbody id="accounts-history-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. TARJETAS Y MÉTODOS DE PAGO -->
+    <section id="tab-cards" class="tab-panel">
+      <div class="grid-2">
+        <div class="card" style="margin-bottom:0;">
+          <div class="card-header">
+            <span class="card-title">💳 Métodos de Pago y Cuentas Vinculadas</span>
+            <button type="button" class="btn btn-primary btn-sm" onclick="openMethodModal()">+ Nuevo Método</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Método / Tarjeta</th>
+                  <th>Cuenta Asociada</th>
+                  <th>Ciclo Facturación</th>
+                  <th class="num">Gasto Mes Activo</th>
+                  <th class="num">Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="methods-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom:0;">
+          <div class="card-header">
+            <span class="card-title">Resumen por Método de Pago (<span id="cards-period-label"></span>)</span>
+          </div>
+          <div id="methods-breakdown-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. CATEGORÍAS Y ANUAL -->
     <section id="tab-annual" class="tab-panel">
       <div class="card">
         <div class="card-header">
-          <span class="card-title">Tabla Anual por Categorías (<span id="annual-year-label"></span>)</span>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;">
-            <button type="button" class="btn btn-sm" id="btn-add-category">+ Categoría</button>
-          </div>
+          <span class="card-title">Resumen Anual por Categoría (<span id="annual-year-label"></span>)</span>
+          <button type="button" class="btn btn-primary btn-sm" id="btn-add-category">+ Categoría / Subcategoría</button>
         </div>
         <div class="table-wrap">
           <table>
@@ -642,58 +855,117 @@
           </table>
         </div>
       </div>
-    </section>
 
-    <!-- 5. METAS Y AHORRO -->
-    <section id="tab-goals" class="tab-panel">
       <div class="card">
         <div class="card-header">
-          <span class="card-title">Objetivos de Ahorro</span>
-          <button type="button" class="btn btn-primary btn-sm" id="btn-add-goal">+ Nueva Meta</button>
+          <span class="card-title">Estructura de Categorías y Subcategorías</span>
         </div>
-        <div id="goals-list" class="grid-2"></div>
+        <div id="categories-tree-list" class="grid-2"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">🏷️ Opciones de Compartido / Etiquetas del Desplegable</span>
+          <button type="button" class="btn btn-primary btn-sm" id="btn-add-share-tag">+ Nueva Etiqueta</button>
+        </div>
+        <p class="text-muted" style="font-size:0.8rem;margin-bottom:10px;">
+          Edita las etiquetas que aparecen en el desplegable de movimientos y marca cuáles computan como <strong>Gasto Común (50%)</strong>.
+        </p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Código</th>
+                <th>Nombre en desplegable</th>
+                <th>¿Es Gasto Común?</th>
+                <th class="num">Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="share-tags-table-body"></tbody>
+          </table>
+        </div>
       </div>
     </section>
 
-    <!-- 6. DATOS Y GOOGLE DRIVE -->
+    <!-- 6. AHORRO E INTERESES (INCLUYE SISTEMA 60 / 20 / 20) -->
+    <section id="tab-goals" class="tab-panel">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">⚖️ Regla Presupuestaria 60 / 20 / 20 (<span id="rule602020-period"></span>)</span>
+          <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+            <span class="text-muted" style="font-size:0.8rem;">Base cálculo:</span>
+            <select id="rule602020-base-mode">
+              <option value="month_income">Ingresos del mes activo</option>
+              <option value="prev_dec_nomina">Nómina base referencia</option>
+            </select>
+            <button type="button" class="btn btn-xs" id="btn-edit-base-nomina">✎ Nómina Base</button>
+          </div>
+        </div>
+        <p class="text-muted" style="font-size:0.8rem;margin-bottom:10px;" id="rule602020-summary-line"></p>
+        <div class="grid-3" id="rule602020-grid" style="margin-bottom:0;"></div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card" style="margin-bottom:0;">
+          <div class="card-header">
+            <span class="card-title">🎯 Meta de Ahorro Anual (<span id="goal-year-label"></span>)</span>
+            <button type="button" class="btn btn-sm btn-primary" id="btn-edit-savings-goal">Editar Objetivo</button>
+          </div>
+          <div id="savings-goal-box"></div>
+        </div>
+
+        <div class="card" style="margin-bottom:0;">
+          <div class="card-header">
+            <span class="card-title">📈 Intereses Remunerados (<span id="interest-year-label"></span>)</span>
+            <button type="button" class="btn btn-sm btn-primary" id="btn-add-interest-col">+ Añadir Cuenta</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr id="interest-table-head"></tr>
+              </thead>
+              <tbody id="interest-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. DATOS Y DRIVE -->
     <section id="tab-sync" class="tab-panel">
       <div class="grid-2">
-        <div class="card">
+        <div class="card" style="margin-bottom:0;">
           <div class="card-header">
             <span class="card-title">☁️ Sincronización con Google Drive</span>
           </div>
           <p class="text-muted" style="font-size:0.84rem;margin-bottom:12px;">
-            Guarda y sincroniza automáticamente tus datos en tu Google Drive privado (<code>Contabilidad_Sync.json</code>).
+            Mantiene tu archivo <code>Contabilidad_Sync.json</code> sincronizado en Google Drive con formato 100% nativo.
           </p>
           <div class="form-group">
-            <label>Client ID de OAuth 2.0 (Google Cloud Console)</label>
+            <label>Client ID de Google Cloud (OAuth 2.0)</label>
             <input type="text" id="gdrive-client-id" placeholder="123456789-xxxx.apps.googleusercontent.com" />
           </div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
-            <button type="button" class="btn btn-accent" id="btn-gdrive-connect">Conectar y Sincronizar</button>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;">
+            <button type="button" class="btn btn-primary" id="btn-gdrive-connect">Conectar y Sincronizar</button>
             <button type="button" class="btn" id="btn-gdrive-pull">⬇️ Descargar de Drive</button>
             <button type="button" class="btn" id="btn-gdrive-push">⬆️ Subir a Drive</button>
           </div>
-          <div id="gdrive-diagnostic-box" style="font-size:0.8rem;padding:8px 10px;border-radius:8px;background:var(--surface-alt);border:1px solid var(--border);color:var(--text-muted);">
-            Estado: Esperando conexión con Google Drive.
+          <div id="gdrive-diagnostic-box" style="margin-top:12px;padding:10px;border-radius:8px;background:var(--surface-alt);border:1px solid var(--border);font-size:0.82rem;color:var(--text-muted);">
+            Listo para sincronizar con Contabilidad_Sync.json.
           </div>
         </div>
 
-        <div class="card">
+        <div class="card" style="margin-bottom:0;">
           <div class="card-header">
-            <span class="card-title">💾 Copias de Seguridad Locales (JSON / HTML)</span>
+            <span class="card-title">💾 Copias de Seguridad Locales</span>
           </div>
-          <p class="text-muted" style="font-size:0.84rem;margin-bottom:12px;">
-            Exporta tus datos en JSON o descarga la aplicación actualizada como <code>index.html</code> para GitHub Pages.
-          </p>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;">
-            <button type="button" class="btn btn-primary" id="btn-export-json">Exportar JSON</button>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;">
+            <button type="button" class="btn btn-primary" id="btn-download-html-sync">Descargar App HTML</button>
+            <button type="button" class="btn" id="btn-export-json">Exportar JSON</button>
             <label class="btn" style="cursor:pointer;">
               Importar JSON
-              <input type="file" id="input-import-json" accept=".json,application/json,text/plain,*/*" style="display:none;" />
+              <input type="file" id="input-import-json" accept=".json,application/json" style="display:none;" />
             </label>
-            <button type="button" class="btn" id="btn-download-html-sync">Descargar index.html</button>
-            <button type="button" class="btn btn-danger" id="btn-reset-demo">Restaurar Ejemplo</button>
           </div>
         </div>
       </div>
@@ -711,98 +983,126 @@
         <input type="hidden" id="tx-id" />
         <div class="form-row">
           <div class="form-group">
-            <label>Tipo</label>
-            <select id="tx-type" required>
-              <option value="expense">Gasto</option>
-              <option value="income">Ingreso</option>
-              <option value="transfer">Transferencia</option>
-            </select>
-          </div>
-          <div class="form-group">
             <label>Fecha</label>
             <input type="date" id="tx-date" required />
+          </div>
+          <div class="form-group">
+            <label>Tipo</label>
+            <select id="tx-sign">
+              <option value="-1">Gasto (-)</option>
+              <option value="1">Ingreso (+)</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Categoría</label>
+            <select id="tx-category" required></select>
+          </div>
+          <div class="form-group">
+            <label>Subcategoría</label>
+            <select id="tx-subcategory" required></select>
           </div>
         </div>
         <div class="form-group">
           <label>Concepto</label>
-          <input type="text" id="tx-desc" placeholder="Ej. Supermercado, Nómina..." required />
+          <input type="text" id="tx-desc" placeholder="Ej. Carrefour, Nómina, Moreno..." required />
         </div>
         <div class="form-row">
+          <div class="form-group">
+            <label>Cuenta o Tarjeta</label>
+            <select id="tx-method" required></select>
+          </div>
           <div class="form-group">
             <label>Importe (€)</label>
             <input type="number" id="tx-amount" step="0.01" min="0" placeholder="0.00" required />
           </div>
-          <div class="form-group">
-            <label>Categoría</label>
-            <select id="tx-category"></select>
-          </div>
         </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label id="tx-account-label">Cuenta</label>
-            <select id="tx-account" required></select>
-          </div>
-          <div class="form-group" id="tx-to-account-group" style="display:none;">
-            <label>Cuenta Destino</label>
-            <select id="tx-to-account"></select>
-          </div>
+        <div class="form-group">
+          <label>Etiqueta / Compartido</label>
+          <select id="tx-tag">
+            <option value="0">Normal (0)</option>
+            <option value="1">Gasto Común / Compartido (1)</option>
+            <option value="GC">Gasto Común (GC)</option>
+            <option value="IND">Individual (IND)</option>
+          </select>
         </div>
         <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:10px;">
           <button type="button" class="btn" onclick="closeTxModal()">Cancelar</button>
-          <button type="submit" class="btn btn-primary">Guardar</button>
+          <button type="submit" class="btn btn-primary">Guardar Movimiento</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- MODAL CUENTA -->
-  <div class="modal-backdrop" id="acc-modal-backdrop">
+  <!-- MODAL EDITAR / CREAR MÉTODO DE PAGO O TARJETA -->
+  <div class="modal-backdrop" id="method-modal-backdrop">
     <div class="modal">
       <div class="modal-header">
-        <strong id="acc-modal-title">Cuenta Bancaria</strong>
-        <button type="button" class="btn btn-sm" onclick="closeAccModal()">✕</button>
+        <strong id="method-modal-title">Editar Método de Pago</strong>
+        <button type="button" class="btn btn-sm" onclick="closeMethodModal()">✕</button>
       </div>
-      <form id="acc-form">
-        <input type="hidden" id="acc-id" />
+      <form id="method-form">
+        <input type="hidden" id="method-old-name" />
         <div class="form-group">
-          <label>Nombre de la Cuenta</label>
-          <input type="text" id="acc-name" placeholder="Ej. Cuenta Nómina, Remunerada..." required />
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label>Tipo</label>
-            <select id="acc-type">
-              <option value="Corriente">Corriente</option>
-              <option value="Ahorro / Remunerada">Ahorro / Remunerada</option>
-              <option value="Inversión">Inversión</option>
-              <option value="Efectivo">Efectivo</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Saldo Actual (€)</label>
-            <input type="number" id="acc-balance" step="0.01" required />
-          </div>
+          <label>Nombre del Método / Tarjeta</label>
+          <input type="text" id="method-name" placeholder="Ej. Caixa MyCard, Visa Pass..." required />
         </div>
         <div class="form-group">
-          <label>TAE Anual (%)</label>
-          <input type="number" id="acc-tae" step="0.01" min="0" value="0" />
+          <label>Cuenta Bancaria Asociada (para descontar de su saldo)</label>
+          <select id="method-linked-account">
+            <option value="">Ninguna (Cargo directo / Mismo nombre)</option>
+          </select>
         </div>
-        <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:10px;">
-          <button type="button" class="btn" onclick="closeAccModal()">Cancelar</button>
-          <button type="submit" class="btn btn-primary">Guardar</button>
+        <div class="form-group">
+          <label style="display:flex;align-items:center;gap:6px;cursor:pointer;">
+            <input type="checkbox" id="method-has-cycle" />
+            Tiene ciclo de facturación mensual (tarjeta de crédito)
+          </label>
+        </div>
+        <div id="method-cycle-fields" class="form-row" style="display:none;">
+          <div class="form-group">
+            <label>Día Inicio Ciclo</label>
+            <input type="number" id="method-start-day" min="1" max="31" value="1" />
+          </div>
+          <div class="form-group">
+            <label>Día Fin Ciclo</label>
+            <input type="number" id="method-end-day" min="1" max="31" value="31" />
+          </div>
+        </div>
+        <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:12px;">
+          <button type="button" class="btn" onclick="closeMethodModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Guardar Método</button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- MODAL CONFIGURAR VISIBILIDAD DE CUENTAS Y TARJETAS -->
+  <div class="modal-backdrop" id="visibility-modal-backdrop">
+    <div class="modal">
+      <div class="modal-header">
+        <strong>👁️ Mostrar / Ocultar Cuentas y Tarjetas</strong>
+        <button type="button" class="btn btn-sm" onclick="closeVisibilityModal()">✕</button>
+      </div>
+      <div class="form-group">
+        <label>Cuentas visibles en pestaña Movimientos:</label>
+        <div id="vis-tx-accounts-list" class="check-grid"></div>
+      </div>
+      <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:14px;">
+        <button type="button" class="btn btn-primary" onclick="saveVisibilitySettings()">Aplicar y Guardar</button>
+      </div>
     </div>
   </div>
 
   <div id="toast" class="toast"></div>
 
   <script>
-    const STORAGE_KEY = "contabilidad_personal_data_v1";
+    const STORAGE_KEY = "contabilidad_personal_native_v2";
     const NAV_STATE_KEY = "contabilidad_nav_state_v1";
     const THEME_MODE_KEY = "contabilidad_theme_mode_v1";
     const GDRIVE_CLIENT_KEY = "contabilidad_gdrive_client_id";
-    const GDRIVE_EMAIL_KEY = "contabilidad_gdrive_user_email";
+    const PANEL_VIS_KEY = "contabilidad_panels_visibility_v1";
     const GDRIVE_FILE_NAME = "Contabilidad_Sync.json";
     const GDRIVE_SCOPE = "https://www.googleapis.com/auth/drive.file";
 
@@ -811,7 +1111,7 @@
       "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
     ];
 
-    const VALID_TABS = ["dashboard", "transactions", "accounts", "annual", "goals", "sync"];
+    const VALID_TABS = ["dashboard", "transactions", "shared", "accounts", "cards", "annual", "goals", "sync"];
 
     function safeStorageGet(key) {
       try { return localStorage.getItem(key); } catch (e) { return null; }
@@ -834,170 +1134,163 @@
       return s;
     }
 
-    function parseSpanishNumber(val) {
-      if (typeof val === "number") return isNaN(val) ? 0 : val;
-      if (!val) return 0;
-      let s = String(val).trim().replace(/[^\d.,\-]/g, "");
-      if (s.includes(",") && s.includes(".")) {
-        if (s.lastIndexOf(",") > s.lastIndexOf(".")) {
-          s = s.replace(/\./g, "").replace(",", ".");
-        } else {
-          s = s.replace(/,/g, "");
-        }
-      } else if (s.includes(",")) {
-        s = s.replace(",", ".");
-      }
-      const n = parseFloat(s);
-      return isNaN(n) ? 0 : n;
-    }
-
     function parseFlexibleJson(rawText) {
       let clean = String(rawText || "")
         .replace(/^\uFEFF/, "")
         .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, "")
         .trim();
-
       try {
         return JSON.parse(clean);
-      } catch (firstErr) {
-        const firstBrace = clean.indexOf("{");
-        const lastBrace = clean.lastIndexOf("}");
-        if (firstBrace !== -1 && lastBrace > firstBrace) {
-          const sliced = clean.slice(firstBrace, lastBrace + 1).replace(/,\s*([}\]])/g, "$1");
-          return JSON.parse(sliced);
+      } catch (e) {
+        const fb = clean.indexOf("{");
+        const lb = clean.lastIndexOf("}");
+        if (fb !== -1 && lb > fb) {
+          return JSON.parse(clean.slice(fb, lb + 1).replace(/,\s*([}\]])/g, "$1"));
         }
-        const firstBracket = clean.indexOf("[");
-        const lastBracket = clean.lastIndexOf("]");
-        if (firstBracket !== -1 && lastBracket > firstBracket) {
-          const slicedArr = clean.slice(firstBracket, lastBracket + 1).replace(/,\s*([}\]])/g, "$1");
-          return JSON.parse(slicedArr);
-        }
-        throw firstErr;
+        throw e;
       }
     }
 
-    function normalizeImportedData(rawInput) {
-      const def = getDefaultState();
-      if (!rawInput || typeof rawInput !== "object") return def;
-
-      let rawObj = rawInput;
-      if (Array.isArray(rawInput)) {
-        rawObj = { transactions: rawInput };
-      } else if (rawInput.data && typeof rawInput.data === "object") {
-        rawObj = rawInput.data;
-      } else if (rawInput.state && typeof rawInput.state === "object") {
-        rawObj = rawInput.state;
-      } else if (rawInput.backup && typeof rawInput.backup === "object") {
-        rawObj = rawInput.backup;
-      }
-
-      const rawTxs = Array.isArray(rawObj.transactions)
-        ? rawObj.transactions
-        : (Array.isArray(rawObj.movimientos)
-          ? rawObj.movimientos
-          : (Array.isArray(rawObj.items) ? rawObj.items : def.transactions));
-
-      const normalizedTxs = rawTxs.map((t, idx) => {
-        const rawType = String(t.type || t.tipo || "expense").toLowerCase();
-        const normType = (rawType === "ingreso" || rawType === "income" || rawType === "+")
-          ? "income"
-          : ((rawType === "transferencia" || rawType === "transfer") ? "transfer" : "expense");
-
-        return {
-          id: t.id || `tx_imp_${idx}_${Date.now()}`,
-          date: normalizeDateStr(t.date || t.fecha || t.day || ""),
-          type: normType,
-          desc: t.desc || t.concepto || t.description || t.titulo || t.name || "Movimiento",
-          category: t.category || t.categoria || t.cat || "Otros",
-          accountId: t.accountId || t.cuentaId || t.account || "acc_1",
-          toAccountId: t.toAccountId || t.cuentaDestinoId || t.toAccount || "",
-          amount: parseSpanishNumber(t.amount ?? t.importe ?? t.valor ?? t.cantidad ?? 0)
-        };
-      });
-
-      const rawAccs = Array.isArray(rawObj.accounts)
-        ? rawObj.accounts
-        : (Array.isArray(rawObj.cuentas) ? rawObj.cuentas : def.accounts);
-
-      const normalizedAccs = rawAccs.map((a, idx) => ({
-        id: a.id || `acc_${idx + 1}`,
-        name: a.name || a.nombre || `Cuenta ${idx + 1}`,
-        type: a.type || a.tipo || "Corriente",
-        balance: parseSpanishNumber(a.balance ?? a.saldo ?? 0),
-        tae: parseSpanishNumber(a.tae ?? a.interes ?? 0)
+    function getDefaultNativeState() {
+      const y = String(new Date().getFullYear());
+      const accountsHistory = MONTHS_ES.map((mName, idx) => ({
+        month: idx + 1,
+        monthName: mName,
+        Caixabank: 0,
+        "Trade Rep": 0,
+        Bankinter: 0,
+        Bbva: 0,
+        Openbank: 0,
+        Revolut: 0,
+        ING: 0,
+        Efectivo: 0
+      }));
+      const intereses = MONTHS_ES.map((mName, idx) => ({
+        month: idx + 1,
+        monthName: mName,
+        tr: 0,
+        otros: 0
       }));
 
-      const rawCats = Array.isArray(rawObj.categories)
-        ? rawObj.categories
-        : (Array.isArray(rawObj.categorias) ? rawObj.categorias : def.categories);
-
-      const normalizedCats = rawCats.map((c, idx) => {
-        if (typeof c === "string") return { id: `cat_${idx}`, name: c, type: "expense" };
-        return {
-          id: c.id || `cat_${idx}`,
-          name: c.name || c.nombre || "Otros",
-          type: (c.type === "income" || c.tipo === "ingreso") ? "income" : "expense"
-        };
-      });
-
       return {
-        updatedAt: rawObj.updatedAt || Date.now(),
-        accounts: normalizedAccs.length ? normalizedAccs : def.accounts,
-        categories: normalizedCats.length ? normalizedCats : def.categories,
-        transactions: normalizedTxs,
-        annualManual: rawObj.annualManual || rawObj.planificacionAnual || {},
-        interestRecords: rawObj.interestRecords || rawObj.intereses || {},
-        goals: Array.isArray(rawObj.goals) ? rawObj.goals : (Array.isArray(rawObj.metas) ? rawObj.metas : def.goals)
+        activeYear: y,
+        gdriveClientId: safeStorageGet(GDRIVE_CLIENT_KEY) || "",
+        security: null,
+        categories: {
+          Supermercado: ["Carrefour", "Mercadona", "Consum", "S - Otros"],
+          Gastos_Fijos: ["Aportación", "Loteria", "Nomina", "Ahorro", "Netflix", "Spotify", "Hbo Max", "Traspaso", "G - Otros", "Intereses"],
+          Ocio: ["Vacaciones", "Paseos", "Espectáculos", "Restaurantes", "Bares", "O - Otros"],
+          Coche: ["Mantenim coche", "Gasolina", "Impuestos", "Financiera", "C - Otros"],
+          Compras: ["Amazon", "Decathlon", "Google Play", "Aliexpress", "El Corte Ingles", "Springfield", "Pull&Bear", "Bizum", "Alvaro Moreno", "Media Markt", "Calzedonia", "Criptomonedas", "Co - Otros"],
+          Salud: ["Farmacia", "Cuidado Personal", "Sa - Otros"],
+          Seguros: ["Coche", "Se - Otros"]
+        },
+        paymentMethods: ["Efectivo", "Caixabank", "Bbva", "Caixa MyCard", "Tarjeta Bbva", "Tarjeta ECI", "Visa Pass", "Openbank", "Trade Republic"],
+        methodAccountLinks: {
+          "Caixa MyCard": "Caixabank",
+          "Tarjeta Bbva": "Bbva",
+          "Tarjeta ECI": "Caixabank",
+          "Visa Pass": "Caixabank"
+        },
+        cardCycles: {
+          "Caixa MyCard": { startDay: 26, startMonth: 1, endDay: 27, endMonth: 2 },
+          "Tarjeta Bbva": { startDay: 1, startMonth: 1, endDay: 31, endMonth: 1 },
+          "Tarjeta ECI": { startDay: 1, startMonth: 1, endDay: 31, endMonth: 1 },
+          "Visa Pass": { startDay: 22, startMonth: 1, endDay: 21, endMonth: 2 }
+        },
+        accountKeys: ["Caixabank", "Trade Rep", "Bankinter", "Bbva", "Openbank", "Revolut", "ING", "Efectivo"],
+        visibleSummaryAccounts: ["Caixabank", "Trade Rep", "Bbva", "Efectivo"],
+        visibleAccountKeys: ["Caixabank", "Trade Rep", "Bankinter", "Bbva", "Openbank", "Revolut", "Efectivo"],
+        visiblePaymentMethods: ["Efectivo", "Caixabank", "Bbva", "Caixa MyCard", "Tarjeta Bbva", "Tarjeta ECI", "Visa Pass", "Openbank", "Trade Republic"],
+        interestColumns: [
+          { key: "tr", label: "Trade Republic" },
+          { key: "otros", label: "Bankinter" }
+        ],
+        shareTags: [
+          { code: "0", label: "Normal (0)", isShared: false },
+          { code: "1", label: "Gasto Común / Compartido (1)", isShared: true },
+          { code: "GC", label: "Gasto Común (GC)", isShared: true },
+          { code: "IND", label: "Individual (IND)", isShared: false }
+        ],
+        years: {
+          [y]: {
+            savingsGoal: 7200,
+            prevDecNomina: 0,
+            accountsHistory,
+            intereses,
+            tx: []
+          }
+        },
+        lastUpdated: "",
+        _isVirgin: true
       };
     }
 
-    function getDefaultState() {
-      const now = new Date();
-      const y = now.getFullYear();
-      const m = String(now.getMonth() + 1).padStart(2, "0");
-      return {
-        updatedAt: Date.now(),
-        accounts: [
-          { id: "acc_1", name: "Cuenta Principal", type: "Corriente", balance: 3250.00, tae: 0 },
-          { id: "acc_2", name: "Cuenta Remunerada", type: "Ahorro / Remunerada", balance: 8500.00, tae: 2.50 }
-        ],
-        categories: [
-          { id: "cat_nomina", name: "Nómina", type: "income" },
-          { id: "cat_intereses", name: "Intereses", type: "income" },
-          { id: "cat_vivienda", name: "Vivienda y Suministros", type: "expense" },
-          { id: "cat_comida", name: "Supermercado y Comida", type: "expense" },
-          { id: "cat_transporte", name: "Transporte", type: "expense" },
-          { id: "cat_ocio", name: "Ocio y Suscripciones", type: "expense" },
-          { id: "cat_otros", name: "Otros", type: "expense" }
-        ],
-        transactions: [
-          { id: "tx_1", date: `${y}-${m}-01`, type: "income", desc: "Nómina mensual", category: "Nómina", accountId: "acc_1", toAccountId: "", amount: 2100.00 },
-          { id: "tx_2", date: `${y}-${m}-03`, type: "expense", desc: "Alquiler / Hipoteca", category: "Vivienda y Suministros", accountId: "acc_1", toAccountId: "", amount: 750.00 },
-          { id: "tx_3", date: `${y}-${m}-07`, type: "expense", desc: "Compra semanal", category: "Supermercado y Comida", accountId: "acc_1", toAccountId: "", amount: 115.40 }
-        ],
-        annualManual: {},
-        interestRecords: {},
-        goals: [
-          { id: "goal_1", name: "Fondo de Emergencia", target: 10000, current: 8500 }
-        ]
-      };
+    function ensureYearStructure(dataObj, yearStr) {
+      if (!dataObj.years) dataObj.years = {};
+      if (!dataObj.years[yearStr]) {
+        dataObj.years[yearStr] = {
+          savingsGoal: 7200,
+          prevDecNomina: 0,
+          accountsHistory: MONTHS_ES.map((mName, idx) => {
+            const row = { month: idx + 1, monthName: mName };
+            (dataObj.accountKeys || []).forEach(k => row[k] = 0);
+            return row;
+          }),
+          intereses: MONTHS_ES.map((mName, idx) => ({
+            month: idx + 1,
+            monthName: mName,
+            tr: 0,
+            otros: 0
+          })),
+          tx: []
+        };
+      }
+      const yObj = dataObj.years[yearStr];
+      if (!Array.isArray(yObj.tx)) yObj.tx = [];
+      if (!Array.isArray(yObj.accountsHistory)) yObj.accountsHistory = [];
+      if (!Array.isArray(yObj.intereses)) yObj.intereses = [];
+      return yObj;
+    }
+
+    function normalizeNativeState(raw) {
+      const base = getDefaultNativeState();
+      if (!raw || typeof raw !== "object") return base;
+
+      if (raw.years && typeof raw.years === "object") {
+        const merged = {
+          ...base,
+          ...raw,
+          categories: (raw.categories && !Array.isArray(raw.categories)) ? raw.categories : base.categories,
+          paymentMethods: Array.isArray(raw.paymentMethods) && raw.paymentMethods.length ? raw.paymentMethods : base.paymentMethods,
+          methodAccountLinks: raw.methodAccountLinks || base.methodAccountLinks,
+          cardCycles: raw.cardCycles || base.cardCycles,
+          accountKeys: Array.isArray(raw.accountKeys) && raw.accountKeys.length ? raw.accountKeys : base.accountKeys,
+          visibleSummaryAccounts: Array.isArray(raw.visibleSummaryAccounts) ? raw.visibleSummaryAccounts : (Array.isArray(raw.accountKeys) ? raw.accountKeys : base.visibleSummaryAccounts),
+          visibleAccountKeys: Array.isArray(raw.visibleAccountKeys) ? raw.visibleAccountKeys : (Array.isArray(raw.accountKeys) ? raw.accountKeys : base.visibleAccountKeys),
+          visiblePaymentMethods: Array.isArray(raw.visiblePaymentMethods) ? raw.visiblePaymentMethods : (Array.isArray(raw.paymentMethods) ? raw.paymentMethods : base.visiblePaymentMethods),
+          interestColumns: Array.isArray(raw.interestColumns) ? raw.interestColumns : base.interestColumns,
+          shareTags: Array.isArray(raw.shareTags) && raw.shareTags.length ? raw.shareTags : base.shareTags,
+          years: raw.years,
+          _isVirgin: false
+        };
+        if (merged.gdriveClientId && !safeStorageGet(GDRIVE_CLIENT_KEY)) {
+          safeStorageSet(GDRIVE_CLIENT_KEY, merged.gdriveClientId);
+        }
+        return merged;
+      }
+
+      return base;
     }
 
     function loadState() {
       const raw = safeStorageGet(STORAGE_KEY);
-      if (!raw) {
-        const def = getDefaultState();
-        def.updatedAt = 0;
-        return def;
+      if (raw) {
+        try {
+          return normalizeNativeState(parseFlexibleJson(raw));
+        } catch (e) {}
       }
-      try {
-        const parsed = parseFlexibleJson(raw);
-        return normalizeImportedData(parsed);
-      } catch (e) {
-        const def = getDefaultState();
-        def.updatedAt = 0;
-        return def;
-      }
+      return getDefaultNativeState();
     }
 
     function readSavedNavState() {
@@ -1017,21 +1310,23 @@
           if (obj && typeof obj.scrollY === "number" && obj.scrollY >= 0) scrollY = obj.scrollY;
         } catch (e) {}
       }
-
-      if (window.location.hash && window.location.hash.length > 1) {
-        const parts = window.location.hash.slice(1).split(":");
-        if (VALID_TABS.includes(parts[0])) tab = parts[0];
-        const hm = parseInt(parts[1], 10);
-        if (!isNaN(hm) && hm >= 0 && hm <= 11) month = hm;
-        const hy = parseInt(parts[2], 10);
-        if (!isNaN(hy) && hy >= 2000 && hy <= 2100) year = hy;
-      }
-
       return { tab, month, year, scrollY };
+    }
+
+    function loadPanelVisPrefs() {
+      try {
+        const obj = JSON.parse(safeStorageGet(PANEL_VIS_KEY) || "{}");
+        return {
+          showTxAccsCards: obj.showTxAccsCards !== false
+        };
+      } catch (e) {
+        return { showTxAccsCards: true };
+      }
     }
 
     let state = loadState();
     const initialNav = readSavedNavState();
+    let panelVis = loadPanelVisPrefs();
     let activeTab = initialNav.tab;
     let selectedMonth = initialNav.month;
     let selectedYear = initialNav.year;
@@ -1040,20 +1335,30 @@
     let monthlyChart = null;
     let categoryChart = null;
 
-    // Google Drive state
     let tokenClient = null;
     let gdriveAccessToken = null;
     let gdriveFileId = null;
     let gdriveSyncTimer = null;
 
+    function getTotalTxCount(st = state) {
+      if (!st || !st.years) return 0;
+      return Object.values(st.years).reduce((sum, y) => sum + (Array.isArray(y.tx) ? y.tx.length : 0), 0);
+    }
+
+    function getStateTimestampMs(st = state) {
+      if (!st || st._isVirgin || !st.lastUpdated) return 0;
+      const ms = Date.parse(st.lastUpdated);
+      return isNaN(ms) ? 0 : ms;
+    }
+
     function persistNavState(updateScroll = true) {
       const prev = readSavedNavState();
       const sy = updateScroll ? Math.max(0, Math.round(window.scrollY || 0)) : prev.scrollY;
-      const payload = { tab: activeTab, month: selectedMonth, year: selectedYear, scrollY: sy };
-      safeStorageSet(NAV_STATE_KEY, JSON.stringify(payload));
-      try {
-        history.replaceState(null, "", `#${activeTab}:${selectedMonth}:${selectedYear}`);
-      } catch (e) {}
+      safeStorageSet(NAV_STATE_KEY, JSON.stringify({ tab: activeTab, month: selectedMonth, year: selectedYear, scrollY: sy }));
+    }
+
+    function persistPanelVisPrefs() {
+      safeStorageSet(PANEL_VIS_KEY, JSON.stringify(panelVis));
     }
 
     function restoreScrollPosition() {
@@ -1072,7 +1377,7 @@
       t.textContent = msg;
       t.classList.add("show");
       clearTimeout(t._timer);
-      t._timer = setTimeout(() => t.classList.remove("show"), 3500);
+      t._timer = setTimeout(() => t.classList.remove("show"), 3400);
     }
 
     function formatEUR(val) {
@@ -1099,14 +1404,17 @@
       const useDark = mode === "dark" || (mode === "system" && prefersDark);
       document.body.classList.toggle("dark", useDark);
       const btn = document.getElementById("btn-theme-toggle");
-      if (btn) {
-        btn.textContent = mode === "system" ? "🌓" : (mode === "dark" ? "🌙" : "☀️");
-      }
+      if (btn) btn.textContent = mode === "system" ? "🌓" : (mode === "dark" ? "🌙" : "☀️");
     }
 
     function saveState(triggerCloud = true) {
-      state.updatedAt = Date.now();
-      safeStorageSet(STORAGE_KEY, JSON.stringify(state));
+      state._isVirgin = false;
+      state.activeYear = String(selectedYear);
+      state.lastUpdated = new Date().toISOString();
+      const cleanCopy = { ...state };
+      delete cleanCopy._isVirgin;
+      safeStorageSet(STORAGE_KEY, JSON.stringify(cleanCopy));
+
       if (triggerCloud && gdriveAccessToken) {
         clearTimeout(gdriveSyncTimer);
         gdriveSyncTimer = setTimeout(() => uploadToGoogleDrive(true), 1200);
@@ -1122,10 +1430,7 @@
       mSel.value = String(selectedMonth);
 
       const years = new Set([new Date().getFullYear(), selectedYear, 2025, 2026, 2027]);
-      state.transactions.forEach(tx => {
-        const d = normalizeDateStr(tx.date);
-        if (d && d.length >= 4) years.add(parseInt(d.slice(0, 4), 10));
-      });
+      Object.keys(state.years || {}).forEach(y => years.add(parseInt(y, 10)));
       const sortedYears = Array.from(years).filter(Boolean).sort((a, b) => a - b);
       ySel.innerHTML = sortedYears.map(y => `<option value="${y}">${y}</option>`).join("");
       ySel.value = String(selectedYear);
@@ -1165,57 +1470,184 @@
       document.getElementById("drawer-backdrop").classList.remove("open");
     }
 
-    function getAccountName(id) {
-      const acc = state.accounts.find(a => a.id === id);
-      return acc ? acc.name : (id || "Sin cuenta");
+    function getYearData(year = selectedYear) {
+      return ensureYearStructure(state, String(year));
     }
 
-    function getFilteredTransactions(year = selectedYear, month = selectedMonth) {
-      const prefix = `${year}-${String(month + 1).padStart(2, "0")}`;
-      return state.transactions
-        .filter(tx => normalizeDateStr(tx.date).startsWith(prefix))
-        .sort((a, b) => normalizeDateStr(b.date).localeCompare(normalizeDateStr(a.date)));
+    function getMonthTxRows(year = selectedYear, monthIdx = selectedMonth) {
+      const yData = getYearData(year);
+      const mNum = monthIdx + 1;
+      return yData.tx
+        .filter(row => Array.isArray(row) && Number(row[1]) === mNum)
+        .sort((a, b) => normalizeDateStr(b[5]).localeCompare(normalizeDateStr(a[5])) || (Number(b[0]) - Number(a[0])));
     }
 
     function jumpToLatestDataPeriodIfCurrentEmpty() {
-      const currentList = getFilteredTransactions(selectedYear, selectedMonth);
-      if (currentList.length > 0 || !state.transactions.length) return;
-      const validDates = state.transactions
-        .map(t => normalizeDateStr(t.date))
-        .filter(d => /^\d{4}-\d{2}/.test(d))
-        .sort();
-      if (validDates.length > 0) {
-        const latest = validDates[validDates.length - 1];
-        selectedYear = parseInt(latest.slice(0, 4), 10);
-        selectedMonth = Math.max(0, Math.min(11, parseInt(latest.slice(5, 7), 10) - 1));
-        persistNavState(false);
+      const curRows = getMonthTxRows(selectedYear, selectedMonth);
+      if (curRows.length > 0 || getTotalTxCount() === 0) return;
+
+      const yearKeys = Object.keys(state.years || {}).sort();
+      for (let i = yearKeys.length - 1; i >= 0; i--) {
+        const yk = yearKeys[i];
+        const txs = state.years[yk]?.tx || [];
+        if (txs.length > 0) {
+          const maxMonth = Math.max(...txs.map(r => Number(r[1]) || 1));
+          selectedYear = parseInt(yk, 10);
+          selectedMonth = Math.max(0, Math.min(11, maxMonth - 1));
+          persistNavState(false);
+          break;
+        }
       }
     }
 
-    /* RENDER DASHBOARD */
-    function renderDashboard() {
-      const totalWorth = state.accounts.reduce((acc, a) => acc + (Number(a.balance) || 0), 0);
-      document.getElementById("kpi-net-worth").textContent = formatEUR(totalWorth);
-      document.getElementById("kpi-accounts-count").textContent = `${state.accounts.length} cuenta(s) activa(s)`;
+    function formatCategoryLabel(catKey) {
+      return String(catKey || "").replace(/_/g, " ");
+    }
 
-      const monthTxs = getFilteredTransactions(selectedYear, selectedMonth);
+    function isTransferRow(row) {
+      const sub = String(row[3] || "").toLowerCase();
+      const desc = String(row[6] || "").toLowerCase();
+      return sub === "traspaso" || sub === "ahorro" || desc.startsWith("traspaso");
+    }
+
+    function isSharedRow(row) {
+      const tag = String(row[8] ?? "").trim().toUpperCase();
+      const customTag = (state.shareTags || []).find(t => String(t.code).trim().toUpperCase() === tag);
+      if (customTag) return Boolean(customTag.isShared);
+      return tag === "GC" || tag === "1";
+    }
+
+    function getShareTagsList() {
+      return (Array.isArray(state.shareTags) && state.shareTags.length)
+        ? state.shareTags
+        : [
+            { code: "0", label: "Normal (0)", isShared: false },
+            { code: "1", label: "Gasto Común / Compartido (1)", isShared: true },
+            { code: "GC", label: "Gasto Común (GC)", isShared: true },
+            { code: "IND", label: "Individual (IND)", isShared: false }
+          ];
+    }
+
+    function syncInterestFromTransaction(yearStr, monthNum, cat, sub, method, signedAmt, deltaMultiplier = 1) {
+      const isInterest = String(cat || "").toLowerCase().includes("interes") ||
+                         String(sub || "").toLowerCase().includes("interes");
+      if (!isInterest) return;
+
+      const yData = ensureYearStructure(state, yearStr);
+      if (!Array.isArray(state.interestColumns)) state.interestColumns = [];
+
+      const methodNorm = String(method || "").trim();
+      const linkedAcc = state.methodAccountLinks?.[methodNorm] || methodNorm;
+      const targetNorm = linkedAcc.toLowerCase();
+
+      let col = state.interestColumns.find(c => {
+        const lbl = String(c.label || "").toLowerCase();
+        const k = String(c.key || "").toLowerCase();
+        return lbl === targetNorm || lbl === methodNorm.toLowerCase() ||
+               (targetNorm.includes("trade") && (k === "tr" || lbl.includes("trade"))) ||
+               (targetNorm.includes("bankinter") && (k === "otros" || lbl.includes("bankinter")));
+      });
+
+      if (!col) {
+        const newKey = "int_" + Date.now().toString(36);
+        col = { key: newKey, label: linkedAcc || "Otros" };
+        state.interestColumns.push(col);
+      }
+
+      let rowObj = yData.intereses.find(r => Number(r.month) === Number(monthNum));
+      if (!rowObj) {
+        rowObj = { month: Number(monthNum), monthName: MONTHS_ES[(Number(monthNum) || 1) - 1] || "Enero" };
+        yData.intereses.push(rowObj);
+      }
+
+      const prevVal = Number(rowObj[col.key]) || 0;
+      const nextVal = Math.max(0, Number((prevVal + (Math.abs(Number(signedAmt) || 0) * deltaMultiplier)).toFixed(2)));
+      rowObj[col.key] = nextVal;
+    }
+
+    /* CÁLCULO UNIFICADO: SALDO EN CUENTA + GASTO DE TARJETAS ASOCIADAS = SALDO NETO REAL */
+    function getUnifiedAccountSummary(accKey, year = selectedYear, monthIdx = selectedMonth) {
+      const yData = getYearData(year);
+      const mNum = monthIdx + 1;
+      const monthHist = yData.accountsHistory.find(r => Number(r.month) === mNum) || {};
+      const bankBalance = Number(monthHist[accKey]) || 0;
+
+      const linkedMethods = Object.entries(state.methodAccountLinks || {})
+        .filter(([, targetAcc]) => String(targetAcc).toLowerCase() === String(accKey).toLowerCase())
+        .map(([methodName]) => methodName);
+
+      const monthRows = getMonthTxRows(year, monthIdx);
+      let cardsSpent = 0;
+
+      linkedMethods.forEach(methodName => {
+        const spent = monthRows
+          .filter(r => r[4] === methodName && !isTransferRow(r) && (Number(r[7]) || 0) < 0)
+          .reduce((sum, r) => sum + Math.abs(Number(r[7]) || 0), 0);
+        cardsSpent += spent;
+      });
+
+      const netBalance = bankBalance - cardsSpent;
+      return {
+        accKey,
+        bankBalance,
+        cardsSpent,
+        netBalance,
+        linkedMethods
+      };
+    }
+
+    function renderUnifiedAccountChip(accKey, clickableFilter = true) {
+      const info = getUnifiedAccountSummary(accKey);
+      const metSel = document.getElementById("tx-filter-method");
+      const isFiltered = clickableFilter && metSel && metSel.value === accKey;
+      const clickAttr = clickableFilter
+        ? `onclick="filterTxByMethod('${escapeAttr(accKey)}')"`
+        : `onclick="switchTab('accounts')"`;
+
+      const cardsDetail = info.linkedMethods.length
+        ? `<div class="acc-chip-line">
+             <span class="text-muted">💳 Tarjetas (${info.linkedMethods.length}):</span>
+             <span class="${info.cardsSpent > 0 ? "text-danger" : "text-muted"}" style="font-weight:700;">-${formatEUR(info.cardsSpent)}</span>
+           </div>
+           <div class="acc-chip-line">
+             <span style="font-weight:700;">Disponible real:</span>
+             <span class="${info.netBalance >= 0 ? "text-success" : "text-danger"}" style="font-weight:800;">${formatEUR(info.netBalance)}</span>
+           </div>`
+        : `<div class="acc-chip-sub">Sin tarjetas vinculadas</div>`;
+
+      return `
+        <div class="acc-chip ${isFiltered ? "selected-filter" : ""}" ${clickAttr}>
+          <div class="acc-chip-name">
+            <span>🏦 ${escapeHtml(accKey)}</span>
+          </div>
+          <div class="acc-chip-val ${info.bankBalance > 0 ? "text-primary" : "text-muted"}">${formatEUR(info.bankBalance)}</div>
+          ${cardsDetail}
+        </div>
+      `;
+    }
+
+    /* 1. RENDER RESUMEN */
+    function renderDashboard() {
+      document.getElementById("kpi-month-name").textContent = MONTHS_ES[selectedMonth];
+      const allAccs = state.accountKeys || [];
+
+      let totalPatrimony = 0;
+      allAccs.forEach(accKey => {
+        totalPatrimony += getUnifiedAccountSummary(accKey).bankBalance;
+      });
+
+      document.getElementById("kpi-net-worth").textContent = formatEUR(totalPatrimony);
+      document.getElementById("kpi-accounts-count").textContent = `${allAccs.length} cuentas activas`;
+
+      const monthRows = getMonthTxRows(selectedYear, selectedMonth);
       let income = 0;
       let expense = 0;
 
-      monthTxs.forEach(tx => {
-        const amt = Number(tx.amount) || 0;
-        if (tx.type === "income") income += amt;
-        else if (tx.type === "expense") expense += amt;
-      });
-
-      Object.entries(state.annualManual || {}).forEach(([key, val]) => {
-        const [y, catName, mIdx] = key.split("|");
-        if (Number(y) === selectedYear && Number(mIdx) === selectedMonth) {
-          const cat = state.categories.find(c => c.name === catName);
-          const v = Number(val) || 0;
-          if (cat && cat.type === "income") income += v;
-          else expense += v;
-        }
+      monthRows.forEach(row => {
+        const amt = Number(row[7]) || 0;
+        if (isTransferRow(row)) return;
+        if (amt >= 0) income += amt;
+        else expense += Math.abs(amt);
       });
 
       const balance = income - expense;
@@ -1229,22 +1661,24 @@
       document.getElementById("kpi-savings-rate").textContent = `Tasa de ahorro: ${isPrivacyMasked ? "••%" : rate + "%"}`;
 
       const tbody = document.getElementById("dashboard-recent-tx");
-      const recent = monthTxs.slice(0, 6);
+      const recent = monthRows.slice(0, 8);
       if (!recent.length) {
-        tbody.innerHTML = `<tr><td colspan="6" class="text-muted" style="text-align:center;padding:18px;">No hay movimientos registrados en ${MONTHS_ES[selectedMonth]} ${selectedYear} (Total global: ${state.transactions.length}).</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6" class="text-muted" style="text-align:center;padding:18px;">Sin movimientos en ${MONTHS_ES[selectedMonth]} ${selectedYear} (Total guardado: ${getTotalTxCount()}).</td></tr>`;
       } else {
-        tbody.innerHTML = recent.map(tx => {
-          const badgeClass = tx.type === "income" ? "badge-income" : (tx.type === "transfer" ? "badge-transfer" : "badge-expense");
-          const label = tx.type === "income" ? "Ingreso" : (tx.type === "transfer" ? "Transferencia" : "Gasto");
-          const sign = tx.type === "income" ? "+" : (tx.type === "expense" ? "-" : "");
+        tbody.innerHTML = recent.map(row => {
+          const amt = Number(row[7]) || 0;
+          const isTr = isTransferRow(row);
+          const colorCls = isTr ? "text-muted" : (amt >= 0 ? "text-success" : "text-danger");
+          const linkedAcc = state.methodAccountLinks[row[4]];
+          const methodDisplay = linkedAcc ? `${row[4]} (${linkedAcc})` : row[4];
           return `
             <tr>
-              <td>${normalizeDateStr(tx.date)}</td>
-              <td><span class="badge ${badgeClass}">${label}</span></td>
-              <td>${escapeHtml(tx.desc)}</td>
-              <td>${escapeHtml(tx.category || "-")}</td>
-              <td>${escapeHtml(getAccountName(tx.accountId))}</td>
-              <td class="num" style="font-weight:700;">${isPrivacyMasked ? "•••• €" : sign + formatEUR(tx.amount)}</td>
+              <td>${normalizeDateStr(row[5])}</td>
+              <td><strong>${escapeHtml(formatCategoryLabel(row[2]))}</strong> · <span class="text-muted">${escapeHtml(row[3])}</span></td>
+              <td>${escapeHtml(row[6])}</td>
+              <td><span class="badge badge-method">${escapeHtml(methodDisplay)}</span></td>
+              <td><span class="badge badge-tag">${escapeHtml(String(row[8] ?? ""))}</span></td>
+              <td class="num ${colorCls}" style="font-weight:700;">${formatEUR(amt)}</td>
             </tr>
           `;
         }).join("");
@@ -1257,22 +1691,24 @@
       document.getElementById("chart-year-label").textContent = selectedYear;
       if (typeof Chart === "undefined") return;
 
+      const yData = getYearData(selectedYear);
       const incData = new Array(12).fill(0);
       const expData = new Array(12).fill(0);
       const catTotals = {};
 
-      state.transactions.forEach(tx => {
-        const d = normalizeDateStr(tx.date);
-        if (!d || !d.startsWith(String(selectedYear))) return;
-        const mIdx = parseInt(d.slice(5, 7), 10) - 1;
+      yData.tx.forEach(row => {
+        const mIdx = (Number(row[1]) || 1) - 1;
         if (mIdx < 0 || mIdx > 11) return;
-        const amt = Number(tx.amount) || 0;
-        if (tx.type === "income") incData[mIdx] += amt;
-        if (tx.type === "expense") {
-          expData[mIdx] += amt;
+        const amt = Number(row[7]) || 0;
+        if (isTransferRow(row)) return;
+        if (amt >= 0) {
+          incData[mIdx] += amt;
+        } else {
+          const absAmt = Math.abs(amt);
+          expData[mIdx] += absAmt;
           if (mIdx === selectedMonth) {
-            const c = tx.category || "Otros";
-            catTotals[c] = (catTotals[c] || 0) + amt;
+            const catLabel = formatCategoryLabel(row[2]);
+            catTotals[catLabel] = (catTotals[catLabel] || 0) + absAmt;
           }
         }
       });
@@ -1322,221 +1758,792 @@
       }
     }
 
-    /* RENDER MOVIMIENTOS */
+    /* 2. RENDER MOVIMIENTOS + PANEL UNIFICADO DE CUENTAS Y TARJETAS */
+    function filterTxByMethod(methodName) {
+      const metSel = document.getElementById("tx-filter-method");
+      if (!metSel) return;
+      metSel.value = metSel.value === methodName ? "all" : methodName;
+      renderTransactions();
+    }
+
+    function clearTxMethodFilter() {
+      const metSel = document.getElementById("tx-filter-method");
+      if (metSel) metSel.value = "all";
+      renderTransactions();
+    }
+
     function renderTransactions() {
-      const accFilter = document.getElementById("tx-filter-account");
-      const prevAcc = accFilter.value || "all";
-      accFilter.innerHTML = `<option value="all">Todas las cuentas</option>` +
-        state.accounts.map(a => `<option value="${a.id}">${escapeHtml(a.name)}</option>`).join("");
-      accFilter.value = prevAcc;
+      document.getElementById("tx-panel-period").textContent = `${MONTHS_ES[selectedMonth]} ${selectedYear}`;
+
+      const toggleBtn = document.getElementById("btn-toggle-tx-cards-panel");
+      const panelBody = document.getElementById("tx-accounts-cards-body");
+      if (toggleBtn) {
+        toggleBtn.textContent = panelVis.showTxAccsCards ? "👁️ Ocultar Cuentas/Tarjetas" : "👁️ Mostrar Cuentas/Tarjetas";
+      }
+      if (panelBody) {
+        panelBody.style.display = panelVis.showTxAccsCards ? "block" : "none";
+      }
+
+      const catSel = document.getElementById("tx-filter-category");
+      const prevCat = catSel.value || "all";
+      catSel.innerHTML = `<option value="all">Todas las categorías</option>` +
+        Object.keys(state.categories || {}).map(k => `<option value="${escapeAttr(k)}">${escapeHtml(formatCategoryLabel(k))}</option>`).join("");
+      catSel.value = prevCat;
+
+      const metSel = document.getElementById("tx-filter-method");
+      const prevMet = metSel.value || "all";
+      metSel.innerHTML = `<option value="all">Todas las cuentas/tarjetas</option>` +
+        (state.paymentMethods || []).map(m => `<option value="${escapeAttr(m)}">${escapeHtml(m)}</option>`).join("");
+      metSel.value = prevMet;
+
+      const clearBtn = document.getElementById("btn-clear-tx-method-filter");
+      if (clearBtn) clearBtn.style.display = metSel.value !== "all" ? "inline-flex" : "none";
+
+      const visTxAccs = (state.visibleAccountKeys && state.visibleAccountKeys.length)
+        ? state.visibleAccountKeys.filter(a => (state.accountKeys || []).includes(a))
+        : (state.accountKeys || []);
+
+      document.getElementById("tx-accounts-strip").innerHTML = visTxAccs
+        .map(accKey => renderUnifiedAccountChip(accKey, true))
+        .join("");
+
+      const allMonthRows = getMonthTxRows(selectedYear, selectedMonth);
+      const tagSel = document.getElementById("tx-filter-tag");
+      const prevTag = tagSel.value || "all";
+      tagSel.innerHTML = `<option value="all">Todas etiquetas</option>` +
+        getShareTagsList().map(t => `<option value="${escapeAttr(String(t.code))}">${escapeHtml(t.label)}</option>`).join("");
+      tagSel.value = prevTag;
 
       const search = (document.getElementById("tx-search").value || "").toLowerCase();
-      const typeF = document.getElementById("tx-filter-type").value;
-      const accF = accFilter.value;
+      const catF = catSel.value;
+      const metF = metSel.value;
+      const tagF = tagSel.value;
 
-      const list = getFilteredTransactions(selectedYear, selectedMonth).filter(tx => {
-        if (typeF !== "all" && tx.type !== typeF) return false;
-        if (accF !== "all" && tx.accountId !== accF && tx.toAccountId !== accF) return false;
-        if (search && !(tx.desc || "").toLowerCase().includes(search) && !(tx.category || "").toLowerCase().includes(search)) return false;
+      const list = allMonthRows.filter(row => {
+        if (catF !== "all" && row[2] !== catF) return false;
+        if (metF !== "all" && row[4] !== metF) return false;
+        if (tagF !== "all" && String(row[8] ?? "") !== tagF) return false;
+        if (search) {
+          const blob = `${row[2]} ${row[3]} ${row[4]} ${row[6]}`.toLowerCase();
+          if (!blob.includes(search)) return false;
+        }
         return true;
       });
 
+      document.getElementById("tx-count-badge").textContent = list.length;
+
       const tbody = document.getElementById("tx-table-body");
       if (!list.length) {
-        tbody.innerHTML = `<tr><td colspan="7" class="text-muted" style="text-align:center;padding:20px;">No hay movimientos en ${MONTHS_ES[selectedMonth]} ${selectedYear} (Total en archivo: ${state.transactions.length}).</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="8" class="text-muted" style="text-align:center;padding:20px;">No hay movimientos que coincidan en ${MONTHS_ES[selectedMonth]} ${selectedYear}.</td></tr>`;
         return;
       }
 
-      tbody.innerHTML = list.map(tx => {
-        const badgeClass = tx.type === "income" ? "badge-income" : (tx.type === "transfer" ? "badge-transfer" : "badge-expense");
-        const label = tx.type === "income" ? "Ingreso" : (tx.type === "transfer" ? "Transferencia" : "Gasto");
-        const accText = tx.type === "transfer"
-          ? `${escapeHtml(getAccountName(tx.accountId))} → ${escapeHtml(getAccountName(tx.toAccountId))}`
-          : escapeHtml(getAccountName(tx.accountId));
+      tbody.innerHTML = list.map(row => {
+        const txId = row[0];
+        const amt = Number(row[7]) || 0;
+        const isTr = isTransferRow(row);
+        const colorCls = isTr ? "text-muted" : (amt >= 0 ? "text-success" : "text-danger");
+        const linkedAcc = state.methodAccountLinks[row[4]];
+        const methodDisplay = linkedAcc ? `${row[4]} → ${linkedAcc}` : row[4];
         return `
           <tr>
-            <td>${normalizeDateStr(tx.date)}</td>
-            <td><span class="badge ${badgeClass}">${label}</span></td>
-            <td>${escapeHtml(tx.desc)}</td>
-            <td>${escapeHtml(tx.category || "-")}</td>
-            <td>${accText}</td>
-            <td class="num" style="font-weight:700;">${formatEUR(tx.amount)}</td>
+            <td>${normalizeDateStr(row[5])}</td>
+            <td><strong>${escapeHtml(formatCategoryLabel(row[2]))}</strong></td>
+            <td>${escapeHtml(row[3])}</td>
+            <td>${escapeHtml(row[6])}</td>
+            <td><span class="badge badge-method">${escapeHtml(methodDisplay)}</span></td>
+            <td><span class="badge badge-tag">${escapeHtml(String(row[8] ?? ""))}</span></td>
+            <td class="num ${colorCls}" style="font-weight:700;">${formatEUR(amt)}</td>
             <td class="num">
-              <button type="button" class="btn btn-sm" onclick="editTx('${tx.id}')">✎</button>
-              <button type="button" class="btn btn-sm btn-danger" onclick="deleteTx('${tx.id}')">🗑</button>
+              <button type="button" class="btn btn-sm" onclick="editTx(${txId})" title="Editar">✎</button>
+              <button type="button" class="btn btn-sm btn-danger" onclick="deleteTx(${txId})" title="Eliminar">🗑</button>
             </td>
           </tr>
         `;
       }).join("");
     }
 
-    /* RENDER CUENTAS E INTERESES */
-    function renderAccounts() {
-      const tbody = document.getElementById("accounts-table-body");
-      tbody.innerHTML = state.accounts.map(acc => {
-        const monthlyEst = ((Number(acc.balance) || 0) * ((Number(acc.tae) || 0) / 100)) / 12;
+    /* 2B. RENDER GASTOS COMUNES */
+    function renderSharedExpenses() {
+      const yData = getYearData(selectedYear);
+      const monthRows = getMonthTxRows(selectedYear, selectedMonth);
+
+      const monthShared = monthRows.filter(r => isSharedRow(r) && !isTransferRow(r));
+      const monthTotal = monthShared.reduce((s, r) => s + Math.abs(Number(r[7]) || 0), 0);
+
+      const monthAport = monthRows
+        .filter(r => String(r[3] || "").toLowerCase().startsWith("aportaci"))
+        .reduce((s, r) => s + Math.abs(Number(r[7]) || 0), 0);
+
+      const yearShared = (yData.tx || []).filter(r => isSharedRow(r) && !isTransferRow(r));
+      const yearTotal = yearShared.reduce((s, r) => s + Math.abs(Number(r[7]) || 0), 0);
+
+      document.getElementById("shared-month-label").textContent = MONTHS_ES[selectedMonth];
+      document.getElementById("shared-month-total").textContent = formatEUR(monthTotal);
+      document.getElementById("shared-month-count").textContent = `${monthShared.length} movimientos comunes`;
+      document.getElementById("shared-month-half").textContent = formatEUR(monthTotal / 2);
+
+      document.getElementById("shared-aport-month").textContent = MONTHS_ES[selectedMonth];
+      document.getElementById("shared-aport-total").textContent = formatEUR(monthAport);
+
+      document.getElementById("shared-year-label").textContent = selectedYear;
+      document.getElementById("shared-year-total").textContent = formatEUR(yearTotal);
+      document.getElementById("shared-year-half").textContent = `50% anual: ${formatEUR(yearTotal / 2)}`;
+
+      const scope = document.getElementById("shared-scope-select")?.value || "month";
+      document.getElementById("shared-list-period").textContent =
+        scope === "year" ? `Todo ${selectedYear}` : `${MONTHS_ES[selectedMonth]} ${selectedYear}`;
+
+      const rowsToShow = (scope === "year"
+        ? [...yearShared].sort((a, b) => normalizeDateStr(b[5]).localeCompare(normalizeDateStr(a[5])))
+        : monthShared);
+
+      const tbody = document.getElementById("shared-table-body");
+      if (!rowsToShow.length) {
+        tbody.innerHTML = `<tr><td colspan="8" class="text-muted" style="text-align:center;padding:20px;">No hay gastos comunes (etiqueta GC o 1) en este periodo.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = rowsToShow.map(row => {
+        const txId = row[0];
+        const amt = Number(row[7]) || 0;
+        const half = amt / 2;
+        const linkedAcc = state.methodAccountLinks[row[4]];
+        const methodDisplay = linkedAcc ? `${row[4]} → ${linkedAcc}` : row[4];
         return `
           <tr>
-            <td><strong>${escapeHtml(acc.name)}</strong></td>
-            <td>${escapeHtml(acc.type)}</td>
-            <td class="num" style="font-weight:700;">${formatEUR(acc.balance)}</td>
-            <td class="num">${isPrivacyMasked ? "••%" : (Number(acc.tae) || 0).toFixed(2) + "%"}</td>
-            <td class="num text-success">${formatEUR(monthlyEst)}</td>
+            <td>${normalizeDateStr(row[5])}</td>
+            <td><strong>${escapeHtml(formatCategoryLabel(row[2]))}</strong> · <span class="text-muted">${escapeHtml(row[3])}</span></td>
+            <td>${escapeHtml(row[6])}</td>
+            <td><span class="badge badge-method">${escapeHtml(methodDisplay)}</span></td>
+            <td><span class="badge badge-tag">${escapeHtml(String(row[8] ?? ""))}</span></td>
+            <td class="num text-danger" style="font-weight:700;">${formatEUR(amt)}</td>
+            <td class="num text-primary" style="font-weight:700;">${formatEUR(half)}</td>
             <td class="num">
-              <button type="button" class="btn btn-sm" onclick="openAccModal('${acc.id}')">✎</button>
-              <button type="button" class="btn btn-sm btn-danger" onclick="deleteAccount('${acc.id}')">🗑</button>
+              <button type="button" class="btn btn-sm" onclick="editTx(${txId})" title="Editar">✎</button>
+              <button type="button" class="btn btn-sm btn-danger" onclick="deleteTx(${txId})" title="Eliminar">🗑</button>
+            </td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function openNewSharedTxModal() {
+      openTxModal();
+      const firstShared = getShareTagsList().find(t => t.isShared);
+      document.getElementById("tx-tag").value = firstShared ? String(firstShared.code) : "GC";
+    }
+
+    /* 3. RENDER GESTIÓN DE CUENTAS + HISTORIAL DE SALDOS */
+    function renderAccountsHistory() {
+      document.getElementById("accounts-year-label").textContent = selectedYear;
+      document.getElementById("acc-list-month").textContent = MONTHS_ES[selectedMonth];
+      const yData = getYearData(selectedYear);
+      const accKeys = state.accountKeys || [];
+      const mNum = selectedMonth + 1;
+      const monthHist = yData.accountsHistory.find(r => Number(r.month) === mNum) || {};
+
+      const manageBody = document.getElementById("accounts-manage-body");
+      manageBody.innerHTML = accKeys.map(accKey => {
+        const bal = Number(monthHist[accKey]) || 0;
+        const inTx = (state.visibleAccountKeys || []).includes(accKey);
+        return `
+          <tr>
+            <td><strong>${escapeHtml(accKey)}</strong></td>
+            <td class="num text-primary" style="font-weight:700;">${formatEUR(bal)}</td>
+            <td>
+              <input type="checkbox" ${inTx ? "checked" : ""} onchange="toggleAccountVisFlag('${escapeAttr(accKey)}', this.checked)" />
+            </td>
+            <td class="num">
+              <button type="button" class="btn btn-sm" onclick="renameAccountPrompt('${escapeAttr(accKey)}')" title="Renombrar cuenta">✎ Editar</button>
+              <button type="button" class="btn btn-sm btn-danger" onclick="deleteAccountColumn('${escapeAttr(accKey)}')" title="Eliminar cuenta">🗑</button>
             </td>
           </tr>
         `;
       }).join("");
 
-      document.getElementById("interest-year-label").textContent = selectedYear;
-      const head = document.getElementById("interest-matrix-head");
-      head.innerHTML = `<th>Cuenta</th>` + MONTHS_ES.map(m => `<th class="num">${m.slice(0, 3)}</th>`).join("") + `<th class="num">Total Año</th>`;
+      const head = document.getElementById("accounts-history-head");
+      head.innerHTML = `<th>Mes</th>` + accKeys.map(k => `<th class="num">${escapeHtml(k)}</th>`).join("") + `<th class="num">Total Mes</th>`;
 
-      const mBody = document.getElementById("interest-matrix-body");
-      mBody.innerHTML = state.accounts.map(acc => {
+      const body = document.getElementById("accounts-history-body");
+      body.innerHTML = MONTHS_ES.map((mName, mIdx) => {
+        const curM = mIdx + 1;
+        let rowObj = yData.accountsHistory.find(r => Number(r.month) === curM);
+        if (!rowObj) {
+          rowObj = { month: curM, monthName: mName };
+          accKeys.forEach(k => rowObj[k] = 0);
+          yData.accountsHistory.push(rowObj);
+        }
         let rowTotal = 0;
-        const cells = MONTHS_ES.map((_, mIdx) => {
-          const key = `${selectedYear}|${acc.id}|${mIdx}`;
-          const val = Number(state.interestRecords[key]) || 0;
+        const cells = accKeys.map(k => {
+          const val = Number(rowObj[k]) || 0;
           rowTotal += val;
           return `<td class="num">
             <input type="number" step="0.01" class="cell-num-input" value="${val || ""}" placeholder="0"
-              onchange="updateInterestCell('${acc.id}', ${mIdx}, this.value)" />
+              onchange="updateAccountHistoryCell(${curM}, '${escapeAttr(k)}', this.value)" />
           </td>`;
         }).join("");
-        return `<tr>
-          <td><strong>${escapeHtml(acc.name)}</strong></td>
+
+        const isCurrent = mIdx === selectedMonth;
+        return `<tr class="${isCurrent ? "active-month-row" : ""}">
+          <td><strong>${mName}</strong></td>
           ${cells}
-          <td class="num" style="font-weight:700;">${formatEUR(rowTotal)}</td>
+          <td class="num text-primary" style="font-weight:800;">${formatEUR(rowTotal)}</td>
         </tr>`;
       }).join("");
     }
 
-    function updateInterestCell(accId, mIdx, val) {
-      const key = `${selectedYear}|${accId}|${mIdx}`;
-      const num = parseFloat(val) || 0;
-      if (num === 0) delete state.interestRecords[key];
-      else state.interestRecords[key] = num;
+    function toggleAccountVisFlag(accKey, checked) {
+      if (!Array.isArray(state.visibleAccountKeys)) state.visibleAccountKeys = [];
+      if (checked && !state.visibleAccountKeys.includes(accKey)) {
+        state.visibleAccountKeys.push(accKey);
+      } else if (!checked) {
+        state.visibleAccountKeys = state.visibleAccountKeys.filter(k => k !== accKey);
+      }
       saveState();
-      renderAccounts();
+      renderTransactions();
     }
 
-    /* RENDER PLANIFICACIÓN ANUAL */
-    function renderAnnual() {
-      document.getElementById("annual-year-label").textContent = selectedYear;
-      const head = document.getElementById("annual-table-head");
-      head.innerHTML = `<th>Categoría</th><th>Tipo</th>` + MONTHS_ES.map(m => `<th class="num">${m.slice(0, 3)}</th>`).join("") + `<th class="num">Total</th>`;
-
-      const tbody = document.getElementById("annual-table-body");
-      tbody.innerHTML = state.categories.map(cat => {
-        let totalCat = 0;
-        const cells = MONTHS_ES.map((_, mIdx) => {
-          const prefix = `${selectedYear}-${String(mIdx + 1).padStart(2, "0")}`;
-          const txSum = state.transactions
-            .filter(t => normalizeDateStr(t.date).startsWith(prefix) && t.category === cat.name && t.type === cat.type)
-            .reduce((s, t) => s + (Number(t.amount) || 0), 0);
-          const manualKey = `${selectedYear}|${cat.name}|${mIdx}`;
-          const manualVal = Number(state.annualManual[manualKey]) || 0;
-          const cellVal = txSum + manualVal;
-          totalCat += cellVal;
-          return `<td class="num">
-            <input type="number" step="0.01" class="cell-num-input" value="${manualVal || ""}"
-              placeholder="${txSum ? txSum.toFixed(0) : "0"}"
-              title="Movimientos: ${txSum.toFixed(2)} € | Extra manual: ${manualVal.toFixed(2)} €"
-              onchange="updateAnnualManual('${escapeAttr(cat.name)}', ${mIdx}, this.value)" />
-          </td>`;
-        }).join("");
-
-        return `<tr>
-          <td><strong>${escapeHtml(cat.name)}</strong></td>
-          <td><span class="badge ${cat.type === "income" ? "badge-income" : "badge-expense"}">${cat.type === "income" ? "Ingreso" : "Gasto"}</span></td>
-          ${cells}
-          <td class="num" style="font-weight:700;">${formatEUR(totalCat)}</td>
-        </tr>`;
-      }).join("");
-    }
-
-    function updateAnnualManual(catName, mIdx, val) {
-      const key = `${selectedYear}|${catName}|${mIdx}`;
-      const num = parseFloat(val) || 0;
-      if (num === 0) delete state.annualManual[key];
-      else state.annualManual[key] = num;
-      saveState();
-      renderAnnual();
-    }
-
-    /* RENDER METAS */
-    function renderGoals() {
-      const container = document.getElementById("goals-list");
-      if (!state.goals.length) {
-        container.innerHTML = `<p class="text-muted">No tienes metas de ahorro creadas todavía.</p>`;
+    function renameAccountPrompt(oldName) {
+      const newName = prompt(`Nuevo nombre para la cuenta "${oldName}":`, oldName);
+      if (!newName || !newName.trim() || newName.trim() === oldName) return;
+      const clean = newName.trim();
+      if (state.accountKeys.includes(clean)) {
+        alert("Ya existe una cuenta con ese nombre.");
         return;
       }
-      container.innerHTML = state.goals.map(g => {
-        const pct = g.target > 0 ? Math.min(100, Math.round((g.current / g.target) * 100)) : 0;
+
+      state.accountKeys = state.accountKeys.map(k => k === oldName ? clean : k);
+      state.visibleSummaryAccounts = (state.visibleSummaryAccounts || []).map(k => k === oldName ? clean : k);
+      state.visibleAccountKeys = (state.visibleAccountKeys || []).map(k => k === oldName ? clean : k);
+
+      Object.keys(state.methodAccountLinks || {}).forEach(m => {
+        if (state.methodAccountLinks[m] === oldName) state.methodAccountLinks[m] = clean;
+      });
+
+      Object.values(state.years || {}).forEach(yObj => {
+        (yObj.accountsHistory || []).forEach(row => {
+          if (Object.prototype.hasOwnProperty.call(row, oldName)) {
+            row[clean] = row[oldName];
+            delete row[oldName];
+          }
+        });
+      });
+
+      saveState();
+      renderAll();
+      showToast(`Cuenta renombrada a "${clean}"`);
+    }
+
+    function deleteAccountColumn(accKey) {
+      if (!confirm(`¿Eliminar la cuenta "${accKey}" y su columna del historial?`)) return;
+      state.accountKeys = state.accountKeys.filter(k => k !== accKey);
+      state.visibleSummaryAccounts = (state.visibleSummaryAccounts || []).filter(k => k !== accKey);
+      state.visibleAccountKeys = (state.visibleAccountKeys || []).filter(k => k !== accKey);
+      Object.values(state.years || {}).forEach(yObj => {
+        (yObj.accountsHistory || []).forEach(row => delete row[accKey]);
+      });
+      saveState();
+      renderAll();
+      showToast("Cuenta eliminada");
+    }
+
+    function updateAccountHistoryCell(monthNum, accKey, val) {
+      const yData = getYearData(selectedYear);
+      let rowObj = yData.accountsHistory.find(r => Number(r.month) === monthNum);
+      if (!rowObj) {
+        rowObj = { month: monthNum, monthName: MONTHS_ES[monthNum - 1] };
+        yData.accountsHistory.push(rowObj);
+      }
+      rowObj[accKey] = parseFloat(val) || 0;
+      saveState();
+      renderAccountsHistory();
+      renderDashboard();
+      renderTransactions();
+    }
+
+    /* 4. RENDER TARJETAS Y MÉTODOS DE PAGO (CON EDICIÓN COMPLETA) */
+    function renderCardsAndMethods() {
+      document.getElementById("cards-period-label").textContent = `${MONTHS_ES[selectedMonth]} ${selectedYear}`;
+      const monthRows = getMonthTxRows(selectedYear, selectedMonth);
+      const totalsByMethod = {};
+      monthRows.forEach(r => {
+        const m = r[4] || "Otros";
+        const amt = Number(r[7]) || 0;
+        if (!isTransferRow(r) && amt < 0) {
+          totalsByMethod[m] = (totalsByMethod[m] || 0) + Math.abs(amt);
+        }
+      });
+
+      const tbody = document.getElementById("methods-table-body");
+      tbody.innerHTML = (state.paymentMethods || []).map(method => {
+        const linked = state.methodAccountLinks[method] || "Cargo directo";
+        const cycle = state.cardCycles[method];
+        const cycleStr = cycle ? `Día ${cycle.startDay} → Día ${cycle.endDay}` : "Cargo directo";
+        const spent = totalsByMethod[method] || 0;
         return `
-          <div class="card">
-            <div class="card-header">
-              <strong>${escapeHtml(g.name)}</strong>
-              <div>
-                <button type="button" class="btn btn-sm" onclick="contributeGoal('${g.id}')">+ Aportar</button>
-                <button type="button" class="btn btn-sm btn-danger" onclick="deleteGoal('${g.id}')">🗑</button>
+          <tr>
+            <td><strong>${escapeHtml(method)}</strong></td>
+            <td>${escapeHtml(linked)}</td>
+            <td class="text-muted">${cycleStr}</td>
+            <td class="num text-danger" style="font-weight:700;">${formatEUR(spent)}</td>
+            <td class="num">
+              <button type="button" class="btn btn-sm" onclick="openMethodModal('${escapeAttr(method)}')" title="Editar método">✎ Editar</button>
+              <button type="button" class="btn btn-sm btn-danger" onclick="deletePaymentMethod('${escapeAttr(method)}')" title="Eliminar">🗑</button>
+            </td>
+          </tr>
+        `;
+      }).join("");
+
+      const breakdownEl = document.getElementById("methods-breakdown-list");
+      const sortedMethods = Object.entries(totalsByMethod).sort((a, b) => b[1] - a[1]);
+      if (!sortedMethods.length) {
+        breakdownEl.innerHTML = `<p class="text-muted">Sin gastos con tarjeta o cuenta en ${MONTHS_ES[selectedMonth]} ${selectedYear}.</p>`;
+      } else {
+        const maxVal = sortedMethods[0][1] || 1;
+        breakdownEl.innerHTML = sortedMethods.map(([m, val]) => {
+          const pct = Math.min(100, Math.round((val / maxVal) * 100));
+          return `
+            <div style="margin-bottom:10px;">
+              <div style="display:flex;justify-content:space-between;font-size:0.85rem;margin-bottom:4px;">
+                <strong>${escapeHtml(m)}</strong>
+                <span>${formatEUR(val)}</span>
+              </div>
+              <div class="progress-track" style="height:8px;">
+                <div class="progress-fill" style="width:${pct}%"></div>
               </div>
             </div>
-            <div style="display:flex;justify-content:space-between;font-size:0.85rem;margin-bottom:6px;">
-              <span>Actual: <strong>${formatEUR(g.current)}</strong></span>
-              <span>Objetivo: <strong>${formatEUR(g.target)}</strong> (${isPrivacyMasked ? "••%" : pct + "%"})</span>
+          `;
+        }).join("");
+      }
+    }
+
+    function openMethodModal(methodName = null) {
+      document.getElementById("method-old-name").value = methodName || "";
+      document.getElementById("method-modal-title").textContent = methodName ? `Editar "${methodName}"` : "Nuevo Método de Pago / Tarjeta";
+      document.getElementById("method-name").value = methodName || "";
+
+      const accSel = document.getElementById("method-linked-account");
+      accSel.innerHTML = `<option value="">Cargo directo / Sin cuenta asociada</option>` +
+        (state.accountKeys || []).map(k => `<option value="${escapeAttr(k)}">${escapeHtml(k)}</option>`).join("");
+      accSel.value = (methodName && state.methodAccountLinks[methodName]) ? state.methodAccountLinks[methodName] : "";
+
+      const cycle = methodName ? state.cardCycles[methodName] : null;
+      const hasCycleChk = document.getElementById("method-has-cycle");
+      const cycleFields = document.getElementById("method-cycle-fields");
+      hasCycleChk.checked = Boolean(cycle);
+      cycleFields.style.display = cycle ? "grid" : "none";
+      document.getElementById("method-start-day").value = cycle ? cycle.startDay : 1;
+      document.getElementById("method-end-day").value = cycle ? cycle.endDay : 31;
+
+      document.getElementById("method-modal-backdrop").classList.add("open");
+    }
+
+    function closeMethodModal() {
+      document.getElementById("method-modal-backdrop").classList.remove("open");
+    }
+
+    function deletePaymentMethod(method) {
+      if (!confirm(`¿Eliminar el método "${method}"?`)) return;
+      state.paymentMethods = state.paymentMethods.filter(m => m !== method);
+      state.visiblePaymentMethods = (state.visiblePaymentMethods || []).filter(m => m !== method);
+      delete state.methodAccountLinks[method];
+      delete state.cardCycles[method];
+      saveState();
+      renderAll();
+      showToast("Método eliminado");
+    }
+
+    /* MODAL CONFIGURACIÓN DE VISIBILIDAD */
+    function openVisibilityModal() {
+      const allAccs = state.accountKeys || [];
+      const txAccs = state.visibleAccountKeys || allAccs;
+
+      document.getElementById("vis-tx-accounts-list").innerHTML = allAccs.map(k => `
+        <label class="check-item">
+          <input type="checkbox" class="chk-vis-tx-acc" value="${escapeAttr(k)}" ${txAccs.includes(k) ? "checked" : ""} />
+          <span>${escapeHtml(k)}</span>
+        </label>
+      `).join("");
+
+      document.getElementById("visibility-modal-backdrop").classList.add("open");
+    }
+
+    function closeVisibilityModal() {
+      document.getElementById("visibility-modal-backdrop").classList.remove("open");
+    }
+
+    function saveVisibilitySettings() {
+      state.visibleAccountKeys = Array.from(document.querySelectorAll(".chk-vis-tx-acc:checked")).map(el => el.value);
+      saveState();
+      closeVisibilityModal();
+      renderAll();
+      showToast("Visibilidad actualizada");
+    }
+
+    /* 5. RENDER CATEGORÍAS Y ANUAL */
+    function renderAnnualAndCategories() {
+      document.getElementById("annual-year-label").textContent = selectedYear;
+      const yData = getYearData(selectedYear);
+      const catKeys = Object.keys(state.categories || {});
+
+      const head = document.getElementById("annual-table-head");
+      head.innerHTML = `<th>Categoría</th>` + MONTHS_ES.map(m => `<th class="num">${m.slice(0, 3)}</th>`).join("") + `<th class="num">Total Año</th>`;
+
+      const body = document.getElementById("annual-table-body");
+      body.innerHTML = catKeys.map(catKey => {
+        let totalYear = 0;
+        const cells = MONTHS_ES.map((_, mIdx) => {
+          const mNum = mIdx + 1;
+          const sum = yData.tx
+            .filter(r => Number(r[1]) === mNum && r[2] === catKey && !isTransferRow(r))
+            .reduce((acc, r) => acc + (Number(r[7]) || 0), 0);
+          totalYear += sum;
+          const cls = sum > 0 ? "text-success" : (sum < 0 ? "text-danger" : "text-muted");
+          return `<td class="num ${cls}">${sum !== 0 ? formatEUR(sum) : "-"}</td>`;
+        }).join("");
+
+        return `<tr>
+          <td><strong>${escapeHtml(formatCategoryLabel(catKey))}</strong></td>
+          ${cells}
+          <td class="num" style="font-weight:800;">${formatEUR(totalYear)}</td>
+        </tr>`;
+      }).join("");
+
+      const treeEl = document.getElementById("categories-tree-list");
+      treeEl.innerHTML = catKeys.map(catKey => {
+        const subs = state.categories[catKey] || [];
+        return `
+          <div class="card" style="margin-bottom:0;">
+            <div class="card-header">
+              <strong>${escapeHtml(formatCategoryLabel(catKey))}</strong>
+              <button type="button" class="btn btn-sm" onclick="addSubcategoryPrompt('${escapeAttr(catKey)}')">+ Subcategoría</button>
             </div>
-            <div class="progress-track">
-              <div class="progress-fill" style="width:${pct}%"></div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;">
+              ${subs.map(s => `<span class="badge badge-tag">${escapeHtml(s)}</span>`).join("")}
             </div>
           </div>
         `;
       }).join("");
+
+      const tagsBody = document.getElementById("share-tags-table-body");
+      if (tagsBody) {
+        const tags = getShareTagsList();
+        tagsBody.innerHTML = tags.map((t, idx) => `
+          <tr>
+            <td><span class="badge badge-tag">${escapeHtml(String(t.code))}</span></td>
+            <td><strong>${escapeHtml(t.label)}</strong></td>
+            <td>
+              <input type="checkbox" ${t.isShared ? "checked" : ""} onchange="toggleShareTagShared(${idx}, this.checked)" />
+            </td>
+            <td class="num">
+              <button type="button" class="btn btn-sm" onclick="editShareTagPrompt(${idx})" title="Editar etiqueta">✎ Editar</button>
+              <button type="button" class="btn btn-sm btn-danger" onclick="deleteShareTag(${idx})" title="Eliminar etiqueta">🗑</button>
+            </td>
+          </tr>
+        `).join("");
+      }
     }
 
-    function contributeGoal(id) {
-      const g = state.goals.find(x => x.id === id);
-      if (!g) return;
-      const ans = prompt(`¿Cuánto deseas sumar a "${g.name}" (€)? (Usa negativo para restar)`, "100");
-      if (ans === null) return;
-      const delta = parseFloat(ans.replace(",", ".")) || 0;
-      g.current = Math.max(0, (Number(g.current) || 0) + delta);
+    function toggleShareTagShared(idx, isShared) {
+      const tags = getShareTagsList();
+      if (!tags[idx]) return;
+      tags[idx].isShared = Boolean(isShared);
+      state.shareTags = tags;
       saveState();
-      renderGoals();
+      renderAll();
     }
 
-    function deleteGoal(id) {
-      if (!confirm("¿Eliminar esta meta de ahorro?")) return;
-      state.goals = state.goals.filter(g => g.id !== id);
+    function editShareTagPrompt(idx) {
+      const tags = getShareTagsList();
+      const item = tags[idx];
+      if (!item) return;
+      const newLabel = prompt("Nombre visible en el desplegable:", item.label);
+      if (!newLabel || !newLabel.trim()) return;
+      const newCode = prompt("Código corto guardado en el movimiento:", String(item.code));
+      if (!newCode || !newCode.trim()) return;
+      item.label = newLabel.trim();
+      item.code = newCode.trim();
+      state.shareTags = tags;
       saveState();
-      renderGoals();
+      renderAll();
+      showToast("Etiqueta actualizada");
     }
 
-    /* MODALES MOVIMIENTOS */
-    function populateTxSelects() {
+    function deleteShareTag(idx) {
+      const tags = getShareTagsList();
+      if (tags.length <= 1) {
+        showToast("Debe haber al menos una etiqueta");
+        return;
+      }
+      if (!confirm(`¿Eliminar la etiqueta "${tags[idx].label}"?`)) return;
+      tags.splice(idx, 1);
+      state.shareTags = tags;
+      saveState();
+      renderAll();
+      showToast("Etiqueta eliminada");
+    }
+
+    function addSubcategoryPrompt(catKey) {
+      const sub = prompt(`Nueva subcategoría dentro de "${formatCategoryLabel(catKey)}":`);
+      if (!sub || !sub.trim()) return;
+      if (!state.categories[catKey]) state.categories[catKey] = [];
+      state.categories[catKey].push(sub.trim());
+      saveState();
+      renderAnnualAndCategories();
+    }
+
+    /* 6. RENDER AHORRO (60/20/20 + META ANUAL) E INTERESES */
+    function renderGoalsAndInterests() {
+      document.getElementById("goal-year-label").textContent = selectedYear;
+      document.getElementById("interest-year-label").textContent = selectedYear;
+      document.getElementById("rule602020-period").textContent = `${MONTHS_ES[selectedMonth]} ${selectedYear}`;
+
+      const yData = getYearData(selectedYear);
+      const monthRows = getMonthTxRows(selectedYear, selectedMonth);
+
+      // Cálculo sistema 60 / 20 / 20
+      const baseMode = document.getElementById("rule602020-base-mode")?.value || "month_income";
+      const monthIncome = monthRows
+        .filter(r => !isTransferRow(r) && (Number(r[7]) || 0) > 0)
+        .reduce((s, r) => s + (Number(r[7]) || 0), 0);
+
+      const refNomina = Number(yData.prevDecNomina) || monthIncome;
+      const baseAmount = baseMode === "prev_dec_nomina" ? refNomina : monthIncome;
+
+      let needsSpent = 0;   // 60%: Gastos_Fijos (excepto Ahorro/Traspaso), Supermercado, Coche, Salud, Seguros
+      let wantsSpent = 0;   // 20%: Ocio, Compras
+      let actualSaved = 0;  // 20%: Subcategoría Ahorro o balance positivo
+
+      monthRows.forEach(r => {
+        const cat = String(r[2] || "");
+        const sub = String(r[3] || "").toLowerCase();
+        const amt = Number(r[7]) || 0;
+
+        if (sub === "ahorro" && amt > 0) {
+          actualSaved += amt;
+          return;
+        }
+        if (isTransferRow(r) || amt >= 0) return;
+
+        const absAmt = Math.abs(amt);
+        if (cat === "Ocio" || cat === "Compras") {
+          wantsSpent += absAmt;
+        } else {
+          needsSpent += absAmt;
+        }
+      });
+
+      const target60 = baseAmount * 0.60;
+      const target20Wants = baseAmount * 0.20;
+      const target20Save = baseAmount * 0.20;
+
+      const pct60 = target60 > 0 ? Math.round((needsSpent / target60) * 100) : 0;
+      const pct20W = target20Wants > 0 ? Math.round((wantsSpent / target20Wants) * 100) : 0;
+      const pct20S = target20Save > 0 ? Math.round((actualSaved / target20Save) * 100) : 0;
+
+      document.getElementById("rule602020-summary-line").innerHTML =
+        `Calculado sobre <strong>${formatEUR(baseAmount)}</strong> (${baseMode === "prev_dec_nomina" ? "Nómina base" : "Ingresos del mes"}).`;
+
+      document.getElementById("rule602020-grid").innerHTML = `
+        <div class="rule-box">
+          <div class="rule-header">
+            <span>🏠 60% Necesidades</span>
+            <span class="${needsSpent > target60 ? "text-danger" : "text-success"}">${isPrivacyMasked ? "••%" : pct60 + "%"}</span>
+          </div>
+          <div style="font-size:0.84rem;margin-bottom:6px;">
+            Gastado: <strong>${formatEUR(needsSpent)}</strong> / Tope: <strong>${formatEUR(target60)}</strong>
+          </div>
+          <div class="progress-track" style="height:10px;">
+            <div class="progress-fill ${needsSpent > target60 ? "over" : ""}" style="width:${Math.min(100, pct60)}%"></div>
+          </div>
+          <div class="kpi-sub">Fijos, Supermercado, Coche, Salud, Seguros</div>
+        </div>
+
+        <div class="rule-box">
+          <div class="rule-header">
+            <span>🎉 20% Ocio y Caprichos</span>
+            <span class="${wantsSpent > target20Wants ? "text-danger" : "text-success"}">${isPrivacyMasked ? "••%" : pct20W + "%"}</span>
+          </div>
+          <div style="font-size:0.84rem;margin-bottom:6px;">
+            Gastado: <strong>${formatEUR(wantsSpent)}</strong> / Tope: <strong>${formatEUR(target20Wants)}</strong>
+          </div>
+          <div class="progress-track" style="height:10px;">
+            <div class="progress-fill ${wantsSpent > target20Wants ? "over" : ""}" style="width:${Math.min(100, pct20W)}%"></div>
+          </div>
+          <div class="kpi-sub">Ocio, Restaurantes, Bares, Vacaciones, Compras</div>
+        </div>
+
+        <div class="rule-box">
+          <div class="rule-header">
+            <span>💰 20% Ahorro</span>
+            <span class="${actualSaved >= target20Save ? "text-success" : "text-primary"}">${isPrivacyMasked ? "••%" : pct20S + "%"}</span>
+          </div>
+          <div style="font-size:0.84rem;margin-bottom:6px;">
+            Ahorrado: <strong>${formatEUR(actualSaved)}</strong> / Meta: <strong>${formatEUR(target20Save)}</strong>
+          </div>
+          <div class="progress-track" style="height:10px;">
+            <div class="progress-fill" style="width:${Math.min(100, pct20S)}%"></div>
+          </div>
+          <div class="kpi-sub">Movimientos con subcategoría Ahorro</div>
+        </div>
+      `;
+
+      // Objetivo anual
+      const goal = Number(yData.savingsGoal) || 7200;
+      const savedInYear = yData.tx
+        .filter(r => String(r[3] || "").toLowerCase() === "ahorro")
+        .reduce((s, r) => s + (Number(r[7]) || 0), 0);
+
+      const pct = goal > 0 ? Math.min(100, Math.round((savedInYear / goal) * 100)) : 0;
+
+      document.getElementById("savings-goal-box").innerHTML = `
+        <div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:0.9rem;">
+          <span>Ahorrado en ${selectedYear}: <strong>${formatEUR(savedInYear)}</strong></span>
+          <span>Meta Anual: <strong>${formatEUR(goal)}</strong> (${isPrivacyMasked ? "••%" : pct + "%"})</span>
+        </div>
+        <div class="progress-track" style="height:16px;margin-bottom:10px;">
+          <div class="progress-fill" style="width:${pct}%"></div>
+        </div>
+        <p class="text-muted" style="font-size:0.82rem;">
+          Calculado automáticamente a partir de los movimientos registrados con subcategoría <strong>Ahorro</strong>.
+        </p>
+      `;
+
+      const cols = state.interestColumns || [{ key: "tr", label: "Trade Republic" }, { key: "otros", label: "Bankinter" }];
+      document.getElementById("interest-table-head").innerHTML =
+        `<th>Mes</th>` + cols.map(c => `<th class="num">
+          <div style="display:inline-flex;align-items:center;gap:4px;">
+            <span>${escapeHtml(c.label)}</span>
+            <button type="button" class="btn btn-xs" onclick="renameInterestColumn('${escapeAttr(c.key)}')" title="Renombrar cuenta">✎</button>
+            <button type="button" class="btn btn-xs btn-danger" onclick="removeInterestColumn('${escapeAttr(c.key)}')" title="Quitar cuenta">✕</button>
+          </div>
+        </th>`).join("") + `<th class="num">Total Mes</th>`;
+
+      document.getElementById("interest-table-body").innerHTML = MONTHS_ES.map((mName, idx) => {
+        const mNum = idx + 1;
+        let rowObj = yData.intereses.find(r => Number(r.month) === mNum);
+        if (!rowObj) {
+          rowObj = { month: mNum, monthName: mName, tr: 0, otros: 0 };
+          yData.intereses.push(rowObj);
+        }
+        let sum = 0;
+        const cells = cols.map(c => {
+          const val = Number(rowObj[c.key]) || 0;
+          sum += val;
+          return `<td class="num">
+            <input type="number" step="0.01" class="cell-num-input" value="${val || ""}" placeholder="0"
+              onchange="updateInterestCell(${mNum}, '${escapeAttr(c.key)}', this.value)" />
+          </td>`;
+        }).join("");
+        return `<tr>
+          <td><strong>${mName}</strong></td>
+          ${cells}
+          <td class="num text-success" style="font-weight:700;">${formatEUR(sum)}</td>
+        </tr>`;
+      }).join("");
+    }
+
+    function updateInterestCell(monthNum, colKey, val) {
+      const yData = getYearData(selectedYear);
+      let rowObj = yData.intereses.find(r => Number(r.month) === monthNum);
+      if (!rowObj) {
+        rowObj = { month: monthNum, monthName: MONTHS_ES[monthNum - 1] };
+        yData.intereses.push(rowObj);
+      }
+      rowObj[colKey] = parseFloat(val) || 0;
+      saveState();
+      renderGoalsAndInterests();
+    }
+
+    function addInterestColumnPrompt() {
+      const name = prompt("Nombre de la cuenta para intereses (ej. Revolut, Openbank, Sabadell):");
+      if (!name || !name.trim()) return;
+      const clean = name.trim();
+      if (!Array.isArray(state.interestColumns)) state.interestColumns = [];
+      if (state.interestColumns.some(c => c.label.toLowerCase() === clean.toLowerCase())) {
+        showToast("Esa cuenta ya existe en intereses");
+        return;
+      }
+      const key = "int_" + Date.now().toString(36);
+      state.interestColumns.push({ key, label: clean });
+      saveState();
+      renderGoalsAndInterests();
+      showToast(`Cuenta "${clean}" añadida a intereses`);
+    }
+
+    function renameInterestColumn(colKey) {
+      const col = (state.interestColumns || []).find(c => c.key === colKey);
+      if (!col) return;
+      const newName = prompt("Nuevo nombre para esta columna de intereses:", col.label);
+      if (!newName || !newName.trim()) return;
+      col.label = newName.trim();
+      saveState();
+      renderGoalsAndInterests();
+      showToast("Nombre de cuenta actualizado");
+    }
+
+    function removeInterestColumn(colKey) {
+      const cols = state.interestColumns || [];
+      if (cols.length <= 1) {
+        showToast("Debe quedar al menos una columna");
+        return;
+      }
+      const col = cols.find(c => c.key === colKey);
+      if (!col) return;
+      if (!confirm(`¿Quitar la columna "${col.label}" de la tabla de intereses?`)) return;
+      state.interestColumns = cols.filter(c => c.key !== colKey);
+      saveState();
+      renderGoalsAndInterests();
+      showToast("Columna eliminada");
+    }
+
+    /* MODAL MOVIMIENTOS */
+    function populateTxSubcategories(catKey, selectedSub = null) {
+      const subSel = document.getElementById("tx-subcategory");
+      const subs = (state.categories && state.categories[catKey]) ? state.categories[catKey] : ["Otros"];
+      subSel.innerHTML = subs.map(s => `<option value="${escapeAttr(s)}">${escapeHtml(s)}</option>`).join("");
+      if (selectedSub && subs.includes(selectedSub)) {
+        subSel.value = selectedSub;
+      }
+    }
+
+    function openTxModal(row = null) {
       const catSel = document.getElementById("tx-category");
-      catSel.innerHTML = state.categories.map(c => `<option value="${escapeAttr(c.name)}">${escapeHtml(c.name)}</option>`).join("");
-      const accOptions = state.accounts.map(a => `<option value="${a.id}">${escapeHtml(a.name)}</option>`).join("");
-      document.getElementById("tx-account").innerHTML = accOptions;
-      document.getElementById("tx-to-account").innerHTML = accOptions;
-    }
+      const catKeys = Object.keys(state.categories || {});
+      catSel.innerHTML = catKeys.map(k => `<option value="${escapeAttr(k)}">${escapeHtml(formatCategoryLabel(k))}</option>`).join("");
 
-    function openTxModal(tx = null) {
-      populateTxSelects();
-      document.getElementById("tx-id").value = tx ? tx.id : "";
-      document.getElementById("tx-modal-title").textContent = tx ? "Editar Movimiento" : "Nuevo Movimiento";
-      document.getElementById("tx-type").value = tx ? tx.type : "expense";
+      const metSel = document.getElementById("tx-method");
+      metSel.innerHTML = (state.paymentMethods || []).map(m => `<option value="${escapeAttr(m)}">${escapeHtml(m)}</option>`).join("");
+
+      document.getElementById("tx-id").value = row ? row[0] : "";
+      document.getElementById("tx-modal-title").textContent = row ? `Editar Movimiento #${row[0]}` : "Nuevo Movimiento";
+
       const defaultDate = `${selectedYear}-${String(selectedMonth + 1).padStart(2, "0")}-${String(new Date().getDate()).padStart(2, "0")}`;
-      document.getElementById("tx-date").value = tx ? normalizeDateStr(tx.date) : defaultDate;
-      document.getElementById("tx-desc").value = tx ? tx.desc : "";
-      document.getElementById("tx-amount").value = tx ? tx.amount : "";
-      if (tx && tx.category) document.getElementById("tx-category").value = tx.category;
-      if (tx && tx.accountId) document.getElementById("tx-account").value = tx.accountId;
-      if (tx && tx.toAccountId) document.getElementById("tx-to-account").value = tx.toAccountId;
-      toggleTransferFields();
+      document.getElementById("tx-date").value = row ? normalizeDateStr(row[5]) : defaultDate;
+
+      const initCat = row && catKeys.includes(row[2]) ? row[2] : catKeys[0];
+      catSel.value = initCat;
+      populateTxSubcategories(initCat, row ? row[3] : null);
+
+      if (row && (state.paymentMethods || []).includes(row[4])) {
+        metSel.value = row[4];
+      }
+
+      document.getElementById("tx-desc").value = row ? row[6] : "";
+      const amt = row ? Number(row[7]) || 0 : 0;
+      document.getElementById("tx-sign").value = row && amt > 0 ? "1" : "-1";
+      document.getElementById("tx-amount").value = row ? Math.abs(amt) : "";
+
+      const txTagSel = document.getElementById("tx-tag");
+      const tags = getShareTagsList();
+      txTagSel.innerHTML = tags.map(t => `<option value="${escapeAttr(String(t.code))}">${escapeHtml(t.label)}</option>`).join("");
+      const curTag = row && row[8] !== undefined ? String(row[8]) : String(tags[0]?.code ?? "0");
+      if (!tags.some(t => String(t.code) === curTag)) {
+        txTagSel.innerHTML += `<option value="${escapeAttr(curTag)}">${escapeHtml(curTag)}</option>`;
+      }
+      txTagSel.value = curTag;
+
       document.getElementById("tx-modal-backdrop").classList.add("open");
     }
 
@@ -1544,66 +2551,23 @@
       document.getElementById("tx-modal-backdrop").classList.remove("open");
     }
 
-    function toggleTransferFields() {
-      const isTr = document.getElementById("tx-type").value === "transfer";
-      document.getElementById("tx-to-account-group").style.display = isTr ? "flex" : "none";
-      document.getElementById("tx-account-label").textContent = isTr ? "Cuenta Origen" : "Cuenta";
-    }
-
-    function applyTxBalanceEffect(tx, reverse = false) {
-      const mult = reverse ? -1 : 1;
-      const amt = Number(tx.amount) || 0;
-      const acc = state.accounts.find(a => a.id === tx.accountId);
-      if (tx.type === "income" && acc) acc.balance = (Number(acc.balance) || 0) + amt * mult;
-      if (tx.type === "expense" && acc) acc.balance = (Number(acc.balance) || 0) - amt * mult;
-      if (tx.type === "transfer") {
-        if (acc) acc.balance = (Number(acc.balance) || 0) - amt * mult;
-        const toAcc = state.accounts.find(a => a.id === tx.toAccountId);
-        if (toAcc) toAcc.balance = (Number(toAcc.balance) || 0) + amt * mult;
-      }
-    }
-
     function editTx(id) {
-      const tx = state.transactions.find(t => t.id === id);
-      if (tx) openTxModal(tx);
+      const yData = getYearData(selectedYear);
+      const row = yData.tx.find(r => Number(r[0]) === Number(id));
+      if (row) openTxModal(row);
     }
 
     function deleteTx(id) {
-      const idx = state.transactions.findIndex(t => t.id === id);
+      const yData = getYearData(selectedYear);
+      const idx = yData.tx.findIndex(r => Number(r[0]) === Number(id));
       if (idx === -1) return;
-      if (!confirm("¿Eliminar este movimiento y revertir su efecto en la cuenta?")) return;
-      applyTxBalanceEffect(state.transactions[idx], true);
-      state.transactions.splice(idx, 1);
+      if (!confirm("¿Eliminar este movimiento?")) return;
+      const removed = yData.tx[idx];
+      syncInterestFromTransaction(String(selectedYear), removed[1], removed[2], removed[3], removed[4], removed[7], -1);
+      yData.tx.splice(idx, 1);
       saveState();
       renderAll();
       showToast("Movimiento eliminado");
-    }
-
-    /* MODALES CUENTAS */
-    function openAccModal(accId = null) {
-      const acc = accId ? state.accounts.find(a => a.id === accId) : null;
-      document.getElementById("acc-id").value = acc ? acc.id : "";
-      document.getElementById("acc-modal-title").textContent = acc ? "Editar Cuenta" : "Nueva Cuenta";
-      document.getElementById("acc-name").value = acc ? acc.name : "";
-      document.getElementById("acc-type").value = acc ? acc.type : "Corriente";
-      document.getElementById("acc-balance").value = acc ? acc.balance : "0";
-      document.getElementById("acc-tae").value = acc ? (acc.tae || 0) : "0";
-      document.getElementById("acc-modal-backdrop").classList.add("open");
-    }
-
-    function closeAccModal() {
-      document.getElementById("acc-modal-backdrop").classList.remove("open");
-    }
-
-    function deleteAccount(id) {
-      if (state.accounts.length <= 1) {
-        alert("Debe quedar al menos una cuenta activa.");
-        return;
-      }
-      if (!confirm("¿Eliminar esta cuenta?")) return;
-      state.accounts = state.accounts.filter(a => a.id !== id);
-      saveState();
-      renderAll();
     }
 
     /* GOOGLE DRIVE SYNC */
@@ -1615,7 +2579,7 @@
     }
 
     function initGoogleDriveClient(silent = false) {
-      const clientId = (document.getElementById("gdrive-client-id").value || safeStorageGet(GDRIVE_CLIENT_KEY) || "").trim();
+      const clientId = (document.getElementById("gdrive-client-id").value || state.gdriveClientId || safeStorageGet(GDRIVE_CLIENT_KEY) || "").trim();
       if (!clientId) {
         if (!silent) {
           switchTab("sync");
@@ -1624,19 +2588,18 @@
         return;
       }
       safeStorageSet(GDRIVE_CLIENT_KEY, clientId);
+      state.gdriveClientId = clientId;
       if (typeof google === "undefined" || !google.accounts || !google.accounts.oauth2) {
         if (!silent) showToast("Cargando librería de Google...");
         return;
       }
-      const savedEmail = safeStorageGet(GDRIVE_EMAIL_KEY) || "";
       tokenClient = google.accounts.oauth2.initTokenClient({
         client_id: clientId,
         scope: GDRIVE_SCOPE,
-        hint: savedEmail || undefined,
         callback: async (resp) => {
           if (resp && resp.access_token) {
             gdriveAccessToken = resp.access_token;
-            updateDriveStatus("☁️ Drive: Conectado — Leyendo datos...", "Conectado. Buscando Contabilidad_Sync.json en Google Drive...");
+            updateDriveStatus("☁️ Drive: Conectado — Sincronizando...", "Conectado. Comprobando Contabilidad_Sync.json...");
             await syncWithGoogleDrive(false);
           }
         }
@@ -1664,13 +2627,10 @@
       try {
         const file = await findDriveFile();
         if (!file) {
-          if ((state.updatedAt || 0) > 0) {
+          if (!state._isVirgin && getTotalTxCount() > 0) {
             await uploadToGoogleDrive(false);
           } else {
-            updateDriveStatus(
-              "☁️ Drive: Conectado (archivo aún no creado)",
-              "No se encontró Contabilidad_Sync.json en Drive con este Client ID."
-            );
+            updateDriveStatus("☁️ Drive: Conectado (sin archivo aún)", "No existe Contabilidad_Sync.json todavía en Drive.");
           }
           return;
         }
@@ -1679,40 +2639,45 @@
           headers: { Authorization: `Bearer ${gdriveAccessToken}` }
         });
         if (!res.ok) throw new Error("Error leyendo Drive");
-        const rawText = await res.text();
-        const remoteRaw = parseFlexibleJson(rawText);
-        const remoteNormalized = normalizeImportedData(remoteRaw);
+        const remoteNormalized = normalizeNativeState(parseFlexibleJson(await res.text()));
 
-        const localIsVirgin = !safeStorageGet(STORAGE_KEY) || (state.updatedAt || 0) === 0;
-        const remoteHasMoreData = remoteNormalized.transactions.length > (state.transactions || []).length;
+        const localVirgin = Boolean(state._isVirgin) || getTotalTxCount() === 0;
+        const remoteTxTotal = getTotalTxCount(remoteNormalized);
+        const localTxTotal = getTotalTxCount(state);
 
-        if (forcePull || localIsVirgin || (remoteNormalized.updatedAt || 0) >= (state.updatedAt || 0) || remoteHasMoreData) {
+        if (forcePull || localVirgin || remoteTxTotal > localTxTotal || getStateTimestampMs(remoteNormalized) >= getStateTimestampMs(state)) {
           state = remoteNormalized;
-          safeStorageSet(STORAGE_KEY, JSON.stringify(state));
+          const cleanCopy = { ...state };
+          delete cleanCopy._isVirgin;
+          safeStorageSet(STORAGE_KEY, JSON.stringify(cleanCopy));
           jumpToLatestDataPeriodIfCurrentEmpty();
           syncPeriodSelectors();
           renderAll();
           restoreScrollPosition();
-          const diagText = `Archivo leído: ${file.name} (${remoteNormalized.transactions.length} movimientos, ${remoteNormalized.accounts.length} cuentas).`;
-          updateDriveStatus(`☁️ Drive: Sincronizado (${remoteNormalized.transactions.length} mov.)`, diagText);
-          showToast(`Cargados ${remoteNormalized.transactions.length} movimientos de Drive`);
+          updateDriveStatus(
+            `☁️ Drive: Sincronizado (${remoteTxTotal} mov.)`,
+            `Leído ${file.name}: ${remoteTxTotal} movimientos y ${(state.accountKeys || []).length} cuentas.`
+          );
+          showToast(`Sincronizados ${remoteTxTotal} movimientos de Drive`);
         } else {
           await uploadToGoogleDrive(false);
         }
       } catch (e) {
-        updateDriveStatus("☁️ Drive: Pulsa para reconectar", "Error leyendo Drive: " + e.message);
+        updateDriveStatus("☁️ Drive: Pulsa para reconectar", "Error Drive: " + e.message);
       }
     }
 
     async function uploadToGoogleDrive(silent = false) {
       if (!gdriveAccessToken) return;
-      if ((state.updatedAt || 0) === 0 && silent) return;
+      if (state._isVirgin && silent) return;
       try {
+        const cleanCopy = { ...state };
+        delete cleanCopy._isVirgin;
         const metadata = { name: GDRIVE_FILE_NAME, mimeType: "application/json" };
         const boundary = "-------314159265358979323846";
         const body =
           `--${boundary}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n${JSON.stringify(metadata)}\r\n` +
-          `--${boundary}\r\nContent-Type: application/json\r\n\r\n${JSON.stringify(state)}\r\n` +
+          `--${boundary}\r\nContent-Type: application/json\r\n\r\n${JSON.stringify(cleanCopy)}\r\n` +
           `--${boundary}--`;
 
         const url = gdriveFileId
@@ -1734,11 +2699,11 @@
         const nowStr = new Date().toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit" });
         updateDriveStatus(
           `☁️ Drive: Guardado (${nowStr})`,
-          `Guardado en Drive a las ${nowStr}: ${state.transactions.length} movimientos y ${state.accounts.length} cuentas.`
+          `Subido a Drive a las ${nowStr} (${getTotalTxCount()} movimientos).`
         );
-        if (!silent) showToast("Guardado en Google Drive");
+        if (!silent) showToast("Subido a Google Drive");
       } catch (e) {
-        updateDriveStatus("☁️ Drive: Error al guardar (pulsa para reconectar)");
+        updateDriveStatus("☁️ Drive: Error al subir");
       }
     }
 
@@ -1766,22 +2731,17 @@
       syncPeriodSelectors();
       renderDashboard();
       renderTransactions();
-      renderAccounts();
-      renderAnnual();
-      renderGoals();
+      renderSharedExpenses();
+      renderAccountsHistory();
+      renderCardsAndMethods();
+      renderAnnualAndCategories();
+      renderGoalsAndInterests();
     }
 
-    /* EVENTOS INICIALES */
+    /* INICIALIZACIÓN */
     document.addEventListener("DOMContentLoaded", () => {
       const savedTheme = safeStorageGet(THEME_MODE_KEY) || "system";
       applyThemeMode(savedTheme, false);
-      if (window.matchMedia) {
-        window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
-          if ((safeStorageGet(THEME_MODE_KEY) || "system") === "system") {
-            applyThemeMode("system", false);
-          }
-        });
-      }
 
       document.getElementById("btn-theme-toggle").addEventListener("click", () => {
         const cur = safeStorageGet(THEME_MODE_KEY) || "system";
@@ -1797,6 +2757,12 @@
       document.getElementById("btn-mobile-menu").addEventListener("click", openDrawer);
       document.getElementById("btn-close-drawer").addEventListener("click", closeDrawer);
       document.getElementById("drawer-backdrop").addEventListener("click", closeDrawer);
+
+      document.getElementById("btn-toggle-tx-cards-panel").addEventListener("click", () => {
+        panelVis.showTxAccsCards = !panelVis.showTxAccsCards;
+        persistPanelVisPrefs();
+        renderTransactions();
+      });
 
       document.getElementById("global-month-select").addEventListener("change", (e) => {
         selectedMonth = parseInt(e.target.value, 10) || 0;
@@ -1815,113 +2781,199 @@
         scrollSaveTimer = setTimeout(() => persistNavState(true), 150);
       }, { passive: true });
       window.addEventListener("pagehide", () => persistNavState(true));
-      document.addEventListener("visibilitychange", () => {
-        if (document.visibilityState === "hidden") persistNavState(true);
-      });
 
       document.getElementById("tx-search").addEventListener("input", renderTransactions);
-      document.getElementById("tx-filter-type").addEventListener("change", renderTransactions);
-      document.getElementById("tx-filter-account").addEventListener("change", renderTransactions);
+      document.getElementById("tx-filter-category").addEventListener("change", renderTransactions);
+      document.getElementById("tx-filter-method").addEventListener("change", renderTransactions);
+      document.getElementById("tx-filter-tag").addEventListener("change", renderTransactions);
+      document.getElementById("shared-scope-select").addEventListener("change", renderSharedExpenses);
+      document.getElementById("rule602020-base-mode").addEventListener("change", renderGoalsAndInterests);
 
       document.getElementById("btn-open-new-tx").addEventListener("click", () => openTxModal());
-      document.getElementById("tx-type").addEventListener("change", toggleTransferFields);
+      document.getElementById("tx-category").addEventListener("change", (e) => {
+        populateTxSubcategories(e.target.value);
+      });
+
       document.getElementById("tx-form").addEventListener("submit", (e) => {
         e.preventDefault();
-        const id = document.getElementById("tx-id").value;
-        const newTx = {
-          id: id || "tx_" + Date.now(),
-          type: document.getElementById("tx-type").value,
-          date: normalizeDateStr(document.getElementById("tx-date").value),
-          desc: document.getElementById("tx-desc").value.trim(),
-          amount: parseFloat(document.getElementById("tx-amount").value) || 0,
-          category: document.getElementById("tx-category").value,
-          accountId: document.getElementById("tx-account").value,
-          toAccountId: document.getElementById("tx-to-account").value
-        };
+        const rawId = document.getElementById("tx-id").value;
+        const dateStr = normalizeDateStr(document.getElementById("tx-date").value);
+        const yearStr = dateStr.slice(0, 4) || String(selectedYear);
+        const monthNum = parseInt(dateStr.slice(5, 7), 10) || (selectedMonth + 1);
+        const cat = document.getElementById("tx-category").value;
+        const sub = document.getElementById("tx-subcategory").value;
+        const method = document.getElementById("tx-method").value;
+        const desc = document.getElementById("tx-desc").value.trim();
+        const sign = Number(document.getElementById("tx-sign").value) || -1;
+        const absAmt = Math.abs(parseFloat(document.getElementById("tx-amount").value) || 0);
+        const signedAmt = Number((sign * absAmt).toFixed(2));
+        const tagRaw = document.getElementById("tx-tag").value;
+        const tagVal = (tagRaw === "0" || tagRaw === "1") ? Number(tagRaw) : tagRaw;
 
-        if (id) {
-          const idx = state.transactions.findIndex(t => t.id === id);
+        const yData = ensureYearStructure(state, yearStr);
+        if (rawId) {
+          const idNum = Number(rawId);
+          const idx = yData.tx.findIndex(r => Number(r[0]) === idNum);
           if (idx !== -1) {
-            applyTxBalanceEffect(state.transactions[idx], true);
-            state.transactions[idx] = newTx;
+            const oldRow = yData.tx[idx];
+            syncInterestFromTransaction(yearStr, oldRow[1], oldRow[2], oldRow[3], oldRow[4], oldRow[7], -1);
+            yData.tx[idx] = [idNum, monthNum, cat, sub, method, dateStr, desc, signedAmt, tagVal];
+            syncInterestFromTransaction(yearStr, monthNum, cat, sub, method, signedAmt, 1);
           }
         } else {
-          state.transactions.push(newTx);
+          const maxId = yData.tx.reduce((m, r) => Math.max(m, Number(r[0]) || 0), 0);
+          yData.tx.push([maxId + 1, monthNum, cat, sub, method, dateStr, desc, signedAmt, tagVal]);
+          syncInterestFromTransaction(yearStr, monthNum, cat, sub, method, signedAmt, 1);
         }
-        applyTxBalanceEffect(newTx, false);
+
         saveState();
         closeTxModal();
         renderAll();
         showToast("Movimiento guardado");
       });
 
-      document.getElementById("btn-add-account").addEventListener("click", () => openAccModal());
-      document.getElementById("acc-form").addEventListener("submit", (e) => {
-        e.preventDefault();
-        const id = document.getElementById("acc-id").value;
-        const accObj = {
-          id: id || "acc_" + Date.now(),
-          name: document.getElementById("acc-name").value.trim(),
-          type: document.getElementById("acc-type").value,
-          balance: parseFloat(document.getElementById("acc-balance").value) || 0,
-          tae: parseFloat(document.getElementById("acc-tae").value) || 0
-        };
-        if (id) {
-          const idx = state.accounts.findIndex(a => a.id === id);
-          if (idx !== -1) state.accounts[idx] = accObj;
-        } else {
-          state.accounts.push(accObj);
+      document.getElementById("btn-add-account-col").addEventListener("click", () => {
+        const name = prompt("Nombre de la nueva cuenta:");
+        if (!name || !name.trim()) return;
+        const clean = name.trim();
+        if (!state.accountKeys.includes(clean)) {
+          state.accountKeys.push(clean);
+          if (!state.visibleSummaryAccounts.includes(clean)) state.visibleSummaryAccounts.push(clean);
+          if (!state.visibleAccountKeys.includes(clean)) state.visibleAccountKeys.push(clean);
+          saveState();
+          renderAll();
+          showToast(`Cuenta "${clean}" añadida`);
         }
-        saveState();
-        closeAccModal();
-        renderAll();
-        showToast("Cuenta guardada");
       });
 
-      document.getElementById("btn-apply-estimated-interest").addEventListener("click", () => {
-        let added = 0;
-        state.accounts.forEach(acc => {
-          const est = Number((((Number(acc.balance) || 0) * ((Number(acc.tae) || 0) / 100)) / 12).toFixed(2));
-          if (est > 0) {
-            const key = `${selectedYear}|${acc.id}|${selectedMonth}`;
-            state.interestRecords[key] = est;
-            acc.balance = (Number(acc.balance) || 0) + est;
-            added += est;
-          }
+      document.getElementById("btn-copy-prev-month-balances").addEventListener("click", () => {
+        if (selectedMonth === 0) {
+          showToast("Estás en Enero");
+          return;
+        }
+        const yData = getYearData(selectedYear);
+        const prevRow = yData.accountsHistory.find(r => Number(r.month) === selectedMonth);
+        let curRow = yData.accountsHistory.find(r => Number(r.month) === selectedMonth + 1);
+        if (!prevRow) return;
+        if (!curRow) {
+          curRow = { month: selectedMonth + 1, monthName: MONTHS_ES[selectedMonth] };
+          yData.accountsHistory.push(curRow);
+        }
+        (state.accountKeys || []).forEach(k => {
+          curRow[k] = Number(prevRow[k]) || 0;
         });
         saveState();
         renderAll();
-        showToast(added > 0 ? "Intereses mensuales abonados" : "Ninguna cuenta tiene TAE > 0%");
+        showToast(`Saldos copiados desde ${MONTHS_ES[selectedMonth - 1]}`);
+      });
+
+      document.getElementById("method-has-cycle").addEventListener("change", (e) => {
+        document.getElementById("method-cycle-fields").style.display = e.target.checked ? "grid" : "none";
+      });
+
+      document.getElementById("method-form").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const oldName = document.getElementById("method-old-name").value;
+        const newName = document.getElementById("method-name").value.trim();
+        const linkedAcc = document.getElementById("method-linked-account").value;
+        const hasCycle = document.getElementById("method-has-cycle").checked;
+        const startDay = parseInt(document.getElementById("method-start-day").value, 10) || 1;
+        const endDay = parseInt(document.getElementById("method-end-day").value, 10) || 31;
+
+        if (!newName) return;
+
+        if (oldName) {
+          state.paymentMethods = state.paymentMethods.map(m => m === oldName ? newName : m);
+          state.visiblePaymentMethods = (state.visiblePaymentMethods || []).map(m => m === oldName ? newName : m);
+          if (oldName !== newName) {
+            delete state.methodAccountLinks[oldName];
+            delete state.cardCycles[oldName];
+            Object.values(state.years || {}).forEach(yObj => {
+              (yObj.tx || []).forEach(row => {
+                if (row[4] === oldName) row[4] = newName;
+              });
+            });
+          }
+        } else {
+          if (!state.paymentMethods.includes(newName)) {
+            state.paymentMethods.push(newName);
+          }
+          if (!(state.visiblePaymentMethods || []).includes(newName)) {
+            state.visiblePaymentMethods.push(newName);
+          }
+        }
+
+        if (linkedAcc) {
+          state.methodAccountLinks[newName] = linkedAcc;
+        } else {
+          delete state.methodAccountLinks[newName];
+        }
+
+        if (hasCycle) {
+          state.cardCycles[newName] = { startDay, startMonth: 1, endDay, endMonth: 2 };
+        } else {
+          delete state.cardCycles[newName];
+        }
+
+        saveState();
+        closeMethodModal();
+        renderAll();
+        showToast("Método de pago guardado");
       });
 
       document.getElementById("btn-add-category").addEventListener("click", () => {
-        const name = prompt("Nombre de la nueva categoría:");
+        const name = prompt("Nombre de la nueva categoría principal:");
         if (!name || !name.trim()) return;
-        const isInc = confirm("¿Es una categoría de INGRESO? (Aceptar = Ingreso / Cancelar = Gasto)");
-        state.categories.push({ id: "cat_" + Date.now(), name: name.trim(), type: isInc ? "income" : "expense" });
+        const key = name.trim().replace(/\s+/g, "_");
+        if (!state.categories[key]) {
+          state.categories[key] = ["Otros"];
+          saveState();
+          renderAnnualAndCategories();
+        }
+      });
+
+      document.getElementById("btn-add-share-tag").addEventListener("click", () => {
+        const label = prompt("Nombre visible para el desplegable (ej. Viajes Comunes):");
+        if (!label || !label.trim()) return;
+        const code = prompt("Código corto (ej. VC):", label.trim().slice(0, 3).toUpperCase());
+        if (!code || !code.trim()) return;
+        const isShared = confirm("¿Esta etiqueta debe sumarse en Gastos Comunes (50%)?");
+        const tags = getShareTagsList();
+        tags.push({ code: code.trim(), label: label.trim(), isShared });
+        state.shareTags = tags;
         saveState();
         renderAll();
+        showToast("Etiqueta añadida");
       });
 
-      document.getElementById("btn-add-goal").addEventListener("click", () => {
-        const name = prompt("Nombre de la meta de ahorro:");
-        if (!name || !name.trim()) return;
-        const target = parseFloat((prompt("Importe objetivo (€):", "3000") || "0").replace(",", ".")) || 0;
-        if (target <= 0) return;
-        state.goals.push({ id: "goal_" + Date.now(), name: name.trim(), target, current: 0 });
+      document.getElementById("btn-add-interest-col").addEventListener("click", addInterestColumnPrompt);
+
+      document.getElementById("btn-edit-savings-goal").addEventListener("click", () => {
+        const yData = getYearData(selectedYear);
+        const val = prompt(`Objetivo de ahorro anual para ${selectedYear} (€):`, yData.savingsGoal || 7200);
+        if (val === null) return;
+        yData.savingsGoal = parseFloat(val.replace(",", ".")) || 0;
         saveState();
-        renderGoals();
+        renderGoalsAndInterests();
       });
 
-      const savedClientId = safeStorageGet(GDRIVE_CLIENT_KEY);
+      document.getElementById("btn-edit-base-nomina").addEventListener("click", () => {
+        const yData = getYearData(selectedYear);
+        const val = prompt(`Nómina base de referencia para ${selectedYear} (€):`, yData.prevDecNomina || 1842.24);
+        if (val === null) return;
+        yData.prevDecNomina = parseFloat(val.replace(",", ".")) || 0;
+        saveState();
+        renderGoalsAndInterests();
+      });
+
+      const savedClientId = state.gdriveClientId || safeStorageGet(GDRIVE_CLIENT_KEY);
       if (savedClientId) document.getElementById("gdrive-client-id").value = savedClientId;
 
       document.getElementById("btn-gdrive-quick").addEventListener("click", () => initGoogleDriveClient(false));
       document.getElementById("btn-gdrive-connect").addEventListener("click", () => initGoogleDriveClient(false));
       document.getElementById("btn-gdrive-pull").addEventListener("click", () => syncWithGoogleDrive(true));
       document.getElementById("btn-gdrive-push").addEventListener("click", () => {
-        state.updatedAt = Date.now();
-        safeStorageSet(STORAGE_KEY, JSON.stringify(state));
+        saveState(false);
         uploadToGoogleDrive(false);
       });
 
@@ -1929,10 +2981,12 @@
       document.getElementById("btn-download-html-sync").addEventListener("click", downloadHtmlCopy);
 
       document.getElementById("btn-export-json").addEventListener("click", () => {
-        const blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/json" });
+        const cleanCopy = { ...state };
+        delete cleanCopy._isVirgin;
+        const blob = new Blob([JSON.stringify(cleanCopy)], { type: "application/json" });
         const a = document.createElement("a");
         a.href = URL.createObjectURL(blob);
-        a.download = `contabilidad_${selectedYear}.json`;
+        a.download = "Contabilidad_Sync.json";
         a.click();
       });
 
@@ -1942,19 +2996,19 @@
         const reader = new FileReader();
         reader.onload = () => {
           try {
-            const imported = parseFlexibleJson(reader.result);
-            state = normalizeImportedData(imported);
+            const parsed = parseFlexibleJson(reader.result);
+            state = normalizeNativeState(parsed);
             jumpToLatestDataPeriodIfCurrentEmpty();
             saveState();
             renderAll();
+            const total = getTotalTxCount();
             updateDriveStatus(
-              `✅ Importado: ${file.name} (${state.transactions.length} mov.)`,
-              `Archivo "${file.name}" importado: ${state.transactions.length} movimientos y ${state.accounts.length} cuentas.`
+              `✅ Importado: ${file.name} (${total} mov.)`,
+              `Cargado "${file.name}": ${total} movimientos, ${(state.accountKeys || []).length} cuentas y ${(state.paymentMethods || []).length} métodos de pago.`
             );
-            showToast(`Importados ${state.transactions.length} movimientos`);
+            showToast(`Importados ${total} movimientos`);
           } catch (err) {
-            const preview = String(reader.result || "").slice(0, 140);
-            alert("No se pudo leer el archivo JSON.\nDetalle: " + err.message + "\nInicio del archivo: " + preview);
+            alert("Error leyendo JSON: " + err.message);
           } finally {
             e.target.value = "";
           }
@@ -1962,13 +3016,7 @@
         reader.readAsText(file, "UTF-8");
       });
 
-      document.getElementById("btn-reset-demo").addEventListener("click", () => {
-        if (!confirm("¿Restaurar los datos de ejemplo iniciales?")) return;
-        state = getDefaultState();
-        saveState();
-        renderAll();
-      });
-
+      jumpToLatestDataPeriodIfCurrentEmpty();
       syncPeriodSelectors();
       switchTab(activeTab, true);
       restoreScrollPosition();
