@@ -669,10 +669,13 @@
             <label>Client ID de OAuth 2.0 (Google Cloud Console)</label>
             <input type="text" id="gdrive-client-id" placeholder="123456789-xxxx.apps.googleusercontent.com" />
           </div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
             <button type="button" class="btn btn-accent" id="btn-gdrive-connect">Conectar y Sincronizar</button>
             <button type="button" class="btn" id="btn-gdrive-pull">⬇️ Descargar de Drive</button>
             <button type="button" class="btn" id="btn-gdrive-push">⬆️ Subir a Drive</button>
+          </div>
+          <div id="gdrive-diagnostic-box" style="font-size:0.8rem;padding:8px 10px;border-radius:8px;background:var(--surface-alt);border:1px solid var(--border);color:var(--text-muted);">
+            Estado: Esperando conexión con Google Drive.
           </div>
         </div>
 
@@ -817,6 +820,66 @@
       try { localStorage.setItem(key, val); } catch (e) {}
     }
 
+    function normalizeDateStr(d) {
+      if (!d) return "";
+      const s = String(d).trim();
+      const isoMatch = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+      if (isoMatch) {
+        return `${isoMatch[1]}-${isoMatch[2].padStart(2, "0")}-${isoMatch[3].padStart(2, "0")}`;
+      }
+      const esMatch = s.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/);
+      if (esMatch) {
+        return `${esMatch[3]}-${esMatch[2].padStart(2, "0")}-${esMatch[1].padStart(2, "0")}`;
+      }
+      return s;
+    }
+
+    function normalizeImportedData(rawObj) {
+      const def = getDefaultState();
+      if (!rawObj || typeof rawObj !== "object") return def;
+
+      const rawTxs = Array.isArray(rawObj.transactions)
+        ? rawObj.transactions
+        : (Array.isArray(rawObj.movimientos) ? rawObj.movimientos : def.transactions);
+
+      const normalizedTxs = rawTxs.map((t, idx) => ({
+        id: t.id || `tx_imp_${idx}_${Date.now()}`,
+        date: normalizeDateStr(t.date || t.fecha || ""),
+        type: t.type === "ingreso" ? "income" : (t.type === "gasto" ? "expense" : (t.type === "transferencia" ? "transfer" : (t.type || "expense"))),
+        desc: t.desc || t.concepto || t.description || "Movimiento",
+        category: t.category || t.categoria || "Otros",
+        accountId: t.accountId || t.cuentaId || "acc_1",
+        toAccountId: t.toAccountId || t.cuentaDestinoId || "",
+        amount: Number(t.amount ?? t.importe ?? 0) || 0
+      }));
+
+      const rawAccs = Array.isArray(rawObj.accounts)
+        ? rawObj.accounts
+        : (Array.isArray(rawObj.cuentas) ? rawObj.cuentas : def.accounts);
+
+      const normalizedAccs = rawAccs.map((a, idx) => ({
+        id: a.id || `acc_${idx + 1}`,
+        name: a.name || a.nombre || `Cuenta ${idx + 1}`,
+        type: a.type || a.tipo || "Corriente",
+        balance: Number(a.balance ?? a.saldo ?? 0) || 0,
+        tae: Number(a.tae ?? a.interes ?? 0) || 0
+      }));
+
+      const rawCats = Array.isArray(rawObj.categories)
+        ? rawObj.categories
+        : (Array.isArray(rawObj.categorias) ? rawObj.categorias : def.categories);
+
+      return {
+        updatedAt: rawObj.updatedAt || Date.now(),
+        accounts: normalizedAccs.length ? normalizedAccs : def.accounts,
+        categories: rawCats.length ? rawCats : def.categories,
+        transactions: normalizedTxs,
+        annualManual: rawObj.annualManual || rawObj.planificacionAnual || {},
+        interestRecords: rawObj.interestRecords || rawObj.intereses || {},
+        goals: Array.isArray(rawObj.goals) ? rawObj.goals : (Array.isArray(rawObj.metas) ? rawObj.metas : def.goals)
+      };
+    }
+
     function getDefaultState() {
       const now = new Date();
       const y = now.getFullYear();
@@ -853,21 +916,12 @@
       const raw = safeStorageGet(STORAGE_KEY);
       if (!raw) {
         const def = getDefaultState();
-        def.updatedAt = 0; // Marca como estado inicial sin cambios del usuario
+        def.updatedAt = 0;
         return def;
       }
       try {
         const parsed = JSON.parse(raw);
-        const def = getDefaultState();
-        return {
-          updatedAt: parsed.updatedAt || 0,
-          accounts: Array.isArray(parsed.accounts) ? parsed.accounts : def.accounts,
-          categories: Array.isArray(parsed.categories) ? parsed.categories : def.categories,
-          transactions: Array.isArray(parsed.transactions) ? parsed.transactions : def.transactions,
-          annualManual: parsed.annualManual || {},
-          interestRecords: parsed.interestRecords || {},
-          goals: Array.isArray(parsed.goals) ? parsed.goals : def.goals
-        };
+        return normalizeImportedData(parsed);
       } catch (e) {
         const def = getDefaultState();
         def.updatedAt = 0;
@@ -947,7 +1001,7 @@
       t.textContent = msg;
       t.classList.add("show");
       clearTimeout(t._timer);
-      t._timer = setTimeout(() => t.classList.remove("show"), 2600);
+      t._timer = setTimeout(() => t.classList.remove("show"), 3200);
     }
 
     function formatEUR(val) {
@@ -1041,14 +1095,29 @@
 
     function getAccountName(id) {
       const acc = state.accounts.find(a => a.id === id);
-      return acc ? acc.name : "Sin cuenta";
+      return acc ? acc.name : (id || "Sin cuenta");
     }
 
     function getFilteredTransactions(year = selectedYear, month = selectedMonth) {
       const prefix = `${year}-${String(month + 1).padStart(2, "0")}`;
       return state.transactions
-        .filter(tx => tx.date && tx.date.startsWith(prefix))
-        .sort((a, b) => (b.date || "").localeCompare(a.date || ""));
+        .filter(tx => normalizeDateStr(tx.date).startsWith(prefix))
+        .sort((a, b) => normalizeDateStr(b.date).localeCompare(normalizeDateStr(a.date)));
+    }
+
+    function jumpToLatestDataPeriodIfCurrentEmpty() {
+      const currentList = getFilteredTransactions(selectedYear, selectedMonth);
+      if (currentList.length > 0 || !state.transactions.length) return;
+      const validDates = state.transactions
+        .map(t => normalizeDateStr(t.date))
+        .filter(d => /^\d{4}-\d{2}/.test(d))
+        .sort();
+      if (validDates.length > 0) {
+        const latest = validDates[validDates.length - 1];
+        selectedYear = parseInt(latest.slice(0, 4), 10);
+        selectedMonth = Math.max(0, Math.min(11, parseInt(latest.slice(5, 7), 10) - 1));
+        persistNavState(false);
+      }
     }
 
     /* RENDER DASHBOARD */
@@ -1090,7 +1159,7 @@
       const tbody = document.getElementById("dashboard-recent-tx");
       const recent = monthTxs.slice(0, 6);
       if (!recent.length) {
-        tbody.innerHTML = `<tr><td colspan="6" class="text-muted" style="text-align:center;padding:18px;">No hay movimientos registrados en ${MONTHS_ES[selectedMonth]} ${selectedYear}.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6" class="text-muted" style="text-align:center;padding:18px;">No hay movimientos registrados en ${MONTHS_ES[selectedMonth]} ${selectedYear} (Total global: ${state.transactions.length}).</td></tr>`;
       } else {
         tbody.innerHTML = recent.map(tx => {
           const badgeClass = tx.type === "income" ? "badge-income" : (tx.type === "transfer" ? "badge-transfer" : "badge-expense");
@@ -1098,7 +1167,7 @@
           const sign = tx.type === "income" ? "+" : (tx.type === "expense" ? "-" : "");
           return `
             <tr>
-              <td>${tx.date}</td>
+              <td>${normalizeDateStr(tx.date)}</td>
               <td><span class="badge ${badgeClass}">${label}</span></td>
               <td>${escapeHtml(tx.desc)}</td>
               <td>${escapeHtml(tx.category || "-")}</td>
@@ -1121,8 +1190,9 @@
       const catTotals = {};
 
       state.transactions.forEach(tx => {
-        if (!tx.date || !tx.date.startsWith(String(selectedYear))) return;
-        const mIdx = parseInt(tx.date.slice(5, 7), 10) - 1;
+        const d = normalizeDateStr(tx.date);
+        if (!d || !d.startsWith(String(selectedYear))) return;
+        const mIdx = parseInt(d.slice(5, 7), 10) - 1;
         if (mIdx < 0 || mIdx > 11) return;
         const amt = Number(tx.amount) || 0;
         if (tx.type === "income") incData[mIdx] += amt;
@@ -1201,7 +1271,7 @@
 
       const tbody = document.getElementById("tx-table-body");
       if (!list.length) {
-        tbody.innerHTML = `<tr><td colspan="7" class="text-muted" style="text-align:center;padding:20px;">No hay movimientos que coincidan con el filtro.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="7" class="text-muted" style="text-align:center;padding:20px;">No hay movimientos en ${MONTHS_ES[selectedMonth]} ${selectedYear} (Total en archivo: ${state.transactions.length}).</td></tr>`;
         return;
       }
 
@@ -1213,7 +1283,7 @@
           : escapeHtml(getAccountName(tx.accountId));
         return `
           <tr>
-            <td>${tx.date}</td>
+            <td>${normalizeDateStr(tx.date)}</td>
             <td><span class="badge ${badgeClass}">${label}</span></td>
             <td>${escapeHtml(tx.desc)}</td>
             <td>${escapeHtml(tx.category || "-")}</td>
@@ -1293,7 +1363,7 @@
         const cells = MONTHS_ES.map((_, mIdx) => {
           const prefix = `${selectedYear}-${String(mIdx + 1).padStart(2, "0")}`;
           const txSum = state.transactions
-            .filter(t => t.date && t.date.startsWith(prefix) && t.category === cat.name && t.type === cat.type)
+            .filter(t => normalizeDateStr(t.date).startsWith(prefix) && t.category === cat.name && t.type === cat.type)
             .reduce((s, t) => s + (Number(t.amount) || 0), 0);
           const manualKey = `${selectedYear}|${cat.name}|${mIdx}`;
           const manualVal = Number(state.annualManual[manualKey]) || 0;
@@ -1388,7 +1458,7 @@
       document.getElementById("tx-modal-title").textContent = tx ? "Editar Movimiento" : "Nuevo Movimiento";
       document.getElementById("tx-type").value = tx ? tx.type : "expense";
       const defaultDate = `${selectedYear}-${String(selectedMonth + 1).padStart(2, "0")}-${String(new Date().getDate()).padStart(2, "0")}`;
-      document.getElementById("tx-date").value = tx ? tx.date : defaultDate;
+      document.getElementById("tx-date").value = tx ? normalizeDateStr(tx.date) : defaultDate;
       document.getElementById("tx-desc").value = tx ? tx.desc : "";
       document.getElementById("tx-amount").value = tx ? tx.amount : "";
       if (tx && tx.category) document.getElementById("tx-category").value = tx.category;
@@ -1465,9 +1535,11 @@
     }
 
     /* GOOGLE DRIVE SYNC */
-    function updateDriveStatus(msg) {
+    function updateDriveStatus(msg, diagMsg = null) {
       const el = document.getElementById("gdrive-status-text");
       if (el) el.textContent = msg;
+      const diag = document.getElementById("gdrive-diagnostic-box");
+      if (diag && diagMsg) diag.textContent = diagMsg;
     }
 
     function initGoogleDriveClient(silent = false) {
@@ -1492,8 +1564,8 @@
         callback: async (resp) => {
           if (resp && resp.access_token) {
             gdriveAccessToken = resp.access_token;
-            updateDriveStatus("☁️ Drive: Conectado — Sincronizando...");
-            await syncWithGoogleDrive();
+            updateDriveStatus("☁️ Drive: Conectado — Leyendo datos...", "Conectado. Buscando Contabilidad_Sync.json en Google Drive...");
+            await syncWithGoogleDrive(false);
           }
         }
       });
@@ -1504,7 +1576,7 @@
 
     async function findDriveFile() {
       const q = encodeURIComponent(`name='${GDRIVE_FILE_NAME}' and trashed=false`);
-      const res = await fetch(`https://www.googleapis.com/drive/v3/files?q=${q}&fields=files(id,name,modifiedTime)`, {
+      const res = await fetch(`https://www.googleapis.com/drive/v3/files?q=${q}&orderBy=modifiedTime desc&fields=files(id,name,modifiedTime,size)`, {
         headers: { Authorization: `Bearer ${gdriveAccessToken}` }
       });
       if (!res.ok) throw new Error("Error buscando archivo en Drive");
@@ -1513,14 +1585,20 @@
     }
 
     async function syncWithGoogleDrive(forcePull = false) {
-      if (!gdriveAccessToken) return;
+      if (!gdriveAccessToken) {
+        initGoogleDriveClient(false);
+        return;
+      }
       try {
         const file = await findDriveFile();
         if (!file) {
           if ((state.updatedAt || 0) > 0) {
             await uploadToGoogleDrive(false);
           } else {
-            updateDriveStatus("☁️ Drive: Conectado (sin datos previos en la nube)");
+            updateDriveStatus(
+              "☁️ Drive: Conectado (archivo aún no creado)",
+              "No se encontró Contabilidad_Sync.json en Drive con este Client ID."
+            );
           }
           return;
         }
@@ -1529,28 +1607,27 @@
           headers: { Authorization: `Bearer ${gdriveAccessToken}` }
         });
         if (!res.ok) throw new Error("Error leyendo Drive");
-        const remote = await res.json();
+        const remoteRaw = await res.json();
+        const remoteNormalized = normalizeImportedData(remoteRaw);
 
         const localIsVirgin = !safeStorageGet(STORAGE_KEY) || (state.updatedAt || 0) === 0;
-        const remoteHasMoreData = remote && Array.isArray(remote.transactions) && remote.transactions.length > (state.transactions || []).length;
+        const remoteHasMoreData = remoteNormalized.transactions.length > (state.transactions || []).length;
 
-        if (forcePull || localIsVirgin || (remote && (remote.updatedAt || 0) >= (state.updatedAt || 0)) || remoteHasMoreData) {
-          state = {
-            ...getDefaultState(),
-            ...remote,
-            updatedAt: remote.updatedAt || Date.now()
-          };
+        if (forcePull || localIsVirgin || (remoteNormalized.updatedAt || 0) >= (state.updatedAt || 0) || remoteHasMoreData) {
+          state = remoteNormalized;
           safeStorageSet(STORAGE_KEY, JSON.stringify(state));
+          jumpToLatestDataPeriodIfCurrentEmpty();
           syncPeriodSelectors();
           renderAll();
           restoreScrollPosition();
-          updateDriveStatus("☁️ Drive: Sincronizado (datos cargados de la nube)");
-          showToast("Datos cargados desde Google Drive");
+          const diagText = `Archivo leído: ${file.name} (${remoteNormalized.transactions.length} movimientos, ${remoteNormalized.accounts.length} cuentas).`;
+          updateDriveStatus(`☁️ Drive: Sincronizado (${remoteNormalized.transactions.length} mov.)`, diagText);
+          showToast(`Cargados ${remoteNormalized.transactions.length} movimientos de Drive`);
         } else {
           await uploadToGoogleDrive(false);
         }
       } catch (e) {
-        updateDriveStatus("☁️ Drive: Pulsa para reconectar");
+        updateDriveStatus("☁️ Drive: Pulsa para reconectar", "Error leyendo Drive: " + e.message);
       }
     }
 
@@ -1582,7 +1659,10 @@
         const info = await res.json();
         if (info.id) gdriveFileId = info.id;
         const nowStr = new Date().toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit" });
-        updateDriveStatus(`☁️ Drive: Guardado (${nowStr})`);
+        updateDriveStatus(
+          `☁️ Drive: Guardado (${nowStr})`,
+          `Guardado en Drive a las ${nowStr}: ${state.transactions.length} movimientos y ${state.accounts.length} cuentas.`
+        );
         if (!silent) showToast("Guardado en Google Drive");
       } catch (e) {
         updateDriveStatus("☁️ Drive: Error al guardar (pulsa para reconectar)");
@@ -1678,7 +1758,7 @@
         const newTx = {
           id: id || "tx_" + Date.now(),
           type: document.getElementById("tx-type").value,
-          date: document.getElementById("tx-date").value,
+          date: normalizeDateStr(document.getElementById("tx-date").value),
           desc: document.getElementById("tx-desc").value.trim(),
           amount: parseFloat(document.getElementById("tx-amount").value) || 0,
           category: document.getElementById("tx-category").value,
@@ -1790,10 +1870,11 @@
         reader.onload = () => {
           try {
             const imported = JSON.parse(reader.result);
-            state = imported;
+            state = normalizeImportedData(imported);
+            jumpToLatestDataPeriodIfCurrentEmpty();
             saveState();
             renderAll();
-            showToast("Copia JSON importada correctamente");
+            showToast(`Importados ${state.transactions.length} movimientos`);
           } catch (err) {
             alert("Archivo JSON no válido.");
           }
