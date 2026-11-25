@@ -690,7 +690,7 @@
             <button type="button" class="btn btn-primary" id="btn-export-json">Exportar JSON</button>
             <label class="btn" style="cursor:pointer;">
               Importar JSON
-              <input type="file" id="input-import-json" accept=".json" style="display:none;" />
+              <input type="file" id="input-import-json" accept=".json,application/json,text/plain,*/*" style="display:none;" />
             </label>
             <button type="button" class="btn" id="btn-download-html-sync">Descargar index.html</button>
             <button type="button" class="btn btn-danger" id="btn-reset-demo">Restaurar Ejemplo</button>
@@ -834,24 +834,86 @@
       return s;
     }
 
-    function normalizeImportedData(rawObj) {
+    function parseSpanishNumber(val) {
+      if (typeof val === "number") return isNaN(val) ? 0 : val;
+      if (!val) return 0;
+      let s = String(val).trim().replace(/[^\d.,\-]/g, "");
+      if (s.includes(",") && s.includes(".")) {
+        if (s.lastIndexOf(",") > s.lastIndexOf(".")) {
+          s = s.replace(/\./g, "").replace(",", ".");
+        } else {
+          s = s.replace(/,/g, "");
+        }
+      } else if (s.includes(",")) {
+        s = s.replace(",", ".");
+      }
+      const n = parseFloat(s);
+      return isNaN(n) ? 0 : n;
+    }
+
+    function parseFlexibleJson(rawText) {
+      let clean = String(rawText || "")
+        .replace(/^\uFEFF/, "")
+        .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, "")
+        .trim();
+
+      try {
+        return JSON.parse(clean);
+      } catch (firstErr) {
+        const firstBrace = clean.indexOf("{");
+        const lastBrace = clean.lastIndexOf("}");
+        if (firstBrace !== -1 && lastBrace > firstBrace) {
+          const sliced = clean.slice(firstBrace, lastBrace + 1).replace(/,\s*([}\]])/g, "$1");
+          return JSON.parse(sliced);
+        }
+        const firstBracket = clean.indexOf("[");
+        const lastBracket = clean.lastIndexOf("]");
+        if (firstBracket !== -1 && lastBracket > firstBracket) {
+          const slicedArr = clean.slice(firstBracket, lastBracket + 1).replace(/,\s*([}\]])/g, "$1");
+          return JSON.parse(slicedArr);
+        }
+        throw firstErr;
+      }
+    }
+
+    function normalizeImportedData(rawInput) {
       const def = getDefaultState();
-      if (!rawObj || typeof rawObj !== "object") return def;
+      if (!rawInput || typeof rawInput !== "object") return def;
+
+      let rawObj = rawInput;
+      if (Array.isArray(rawInput)) {
+        rawObj = { transactions: rawInput };
+      } else if (rawInput.data && typeof rawInput.data === "object") {
+        rawObj = rawInput.data;
+      } else if (rawInput.state && typeof rawInput.state === "object") {
+        rawObj = rawInput.state;
+      } else if (rawInput.backup && typeof rawInput.backup === "object") {
+        rawObj = rawInput.backup;
+      }
 
       const rawTxs = Array.isArray(rawObj.transactions)
         ? rawObj.transactions
-        : (Array.isArray(rawObj.movimientos) ? rawObj.movimientos : def.transactions);
+        : (Array.isArray(rawObj.movimientos)
+          ? rawObj.movimientos
+          : (Array.isArray(rawObj.items) ? rawObj.items : def.transactions));
 
-      const normalizedTxs = rawTxs.map((t, idx) => ({
-        id: t.id || `tx_imp_${idx}_${Date.now()}`,
-        date: normalizeDateStr(t.date || t.fecha || ""),
-        type: t.type === "ingreso" ? "income" : (t.type === "gasto" ? "expense" : (t.type === "transferencia" ? "transfer" : (t.type || "expense"))),
-        desc: t.desc || t.concepto || t.description || "Movimiento",
-        category: t.category || t.categoria || "Otros",
-        accountId: t.accountId || t.cuentaId || "acc_1",
-        toAccountId: t.toAccountId || t.cuentaDestinoId || "",
-        amount: Number(t.amount ?? t.importe ?? 0) || 0
-      }));
+      const normalizedTxs = rawTxs.map((t, idx) => {
+        const rawType = String(t.type || t.tipo || "expense").toLowerCase();
+        const normType = (rawType === "ingreso" || rawType === "income" || rawType === "+")
+          ? "income"
+          : ((rawType === "transferencia" || rawType === "transfer") ? "transfer" : "expense");
+
+        return {
+          id: t.id || `tx_imp_${idx}_${Date.now()}`,
+          date: normalizeDateStr(t.date || t.fecha || t.day || ""),
+          type: normType,
+          desc: t.desc || t.concepto || t.description || t.titulo || t.name || "Movimiento",
+          category: t.category || t.categoria || t.cat || "Otros",
+          accountId: t.accountId || t.cuentaId || t.account || "acc_1",
+          toAccountId: t.toAccountId || t.cuentaDestinoId || t.toAccount || "",
+          amount: parseSpanishNumber(t.amount ?? t.importe ?? t.valor ?? t.cantidad ?? 0)
+        };
+      });
 
       const rawAccs = Array.isArray(rawObj.accounts)
         ? rawObj.accounts
@@ -861,18 +923,27 @@
         id: a.id || `acc_${idx + 1}`,
         name: a.name || a.nombre || `Cuenta ${idx + 1}`,
         type: a.type || a.tipo || "Corriente",
-        balance: Number(a.balance ?? a.saldo ?? 0) || 0,
-        tae: Number(a.tae ?? a.interes ?? 0) || 0
+        balance: parseSpanishNumber(a.balance ?? a.saldo ?? 0),
+        tae: parseSpanishNumber(a.tae ?? a.interes ?? 0)
       }));
 
       const rawCats = Array.isArray(rawObj.categories)
         ? rawObj.categories
         : (Array.isArray(rawObj.categorias) ? rawObj.categorias : def.categories);
 
+      const normalizedCats = rawCats.map((c, idx) => {
+        if (typeof c === "string") return { id: `cat_${idx}`, name: c, type: "expense" };
+        return {
+          id: c.id || `cat_${idx}`,
+          name: c.name || c.nombre || "Otros",
+          type: (c.type === "income" || c.tipo === "ingreso") ? "income" : "expense"
+        };
+      });
+
       return {
         updatedAt: rawObj.updatedAt || Date.now(),
         accounts: normalizedAccs.length ? normalizedAccs : def.accounts,
-        categories: rawCats.length ? rawCats : def.categories,
+        categories: normalizedCats.length ? normalizedCats : def.categories,
         transactions: normalizedTxs,
         annualManual: rawObj.annualManual || rawObj.planificacionAnual || {},
         interestRecords: rawObj.interestRecords || rawObj.intereses || {},
@@ -920,7 +991,7 @@
         return def;
       }
       try {
-        const parsed = JSON.parse(raw);
+        const parsed = parseFlexibleJson(raw);
         return normalizeImportedData(parsed);
       } catch (e) {
         const def = getDefaultState();
@@ -1001,7 +1072,7 @@
       t.textContent = msg;
       t.classList.add("show");
       clearTimeout(t._timer);
-      t._timer = setTimeout(() => t.classList.remove("show"), 3200);
+      t._timer = setTimeout(() => t.classList.remove("show"), 3500);
     }
 
     function formatEUR(val) {
@@ -1052,7 +1123,8 @@
 
       const years = new Set([new Date().getFullYear(), selectedYear, 2025, 2026, 2027]);
       state.transactions.forEach(tx => {
-        if (tx.date && tx.date.length >= 4) years.add(parseInt(tx.date.slice(0, 4), 10));
+        const d = normalizeDateStr(tx.date);
+        if (d && d.length >= 4) years.add(parseInt(d.slice(0, 4), 10));
       });
       const sortedYears = Array.from(years).filter(Boolean).sort((a, b) => a - b);
       ySel.innerHTML = sortedYears.map(y => `<option value="${y}">${y}</option>`).join("");
@@ -1607,7 +1679,8 @@
           headers: { Authorization: `Bearer ${gdriveAccessToken}` }
         });
         if (!res.ok) throw new Error("Error leyendo Drive");
-        const remoteRaw = await res.json();
+        const rawText = await res.text();
+        const remoteRaw = parseFlexibleJson(rawText);
         const remoteNormalized = normalizeImportedData(remoteRaw);
 
         const localIsVirgin = !safeStorageGet(STORAGE_KEY) || (state.updatedAt || 0) === 0;
@@ -1869,17 +1942,24 @@
         const reader = new FileReader();
         reader.onload = () => {
           try {
-            const imported = JSON.parse(reader.result);
+            const imported = parseFlexibleJson(reader.result);
             state = normalizeImportedData(imported);
             jumpToLatestDataPeriodIfCurrentEmpty();
             saveState();
             renderAll();
+            updateDriveStatus(
+              `✅ Importado: ${file.name} (${state.transactions.length} mov.)`,
+              `Archivo "${file.name}" importado: ${state.transactions.length} movimientos y ${state.accounts.length} cuentas.`
+            );
             showToast(`Importados ${state.transactions.length} movimientos`);
           } catch (err) {
-            alert("Archivo JSON no válido.");
+            const preview = String(reader.result || "").slice(0, 140);
+            alert("No se pudo leer el archivo JSON.\nDetalle: " + err.message + "\nInicio del archivo: " + preview);
+          } finally {
+            e.target.value = "";
           }
         };
-        reader.readAsText(file);
+        reader.readAsText(file, "UTF-8");
       });
 
       document.getElementById("btn-reset-demo").addEventListener("click", () => {
