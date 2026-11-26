@@ -649,20 +649,20 @@
       </div>
     </section>
 
-    <!-- 2. MOVIMIENTOS (CON PANEL UNIFICADO DE SALDOS DE CUENTAS Y TARJETAS ARRIBA) -->
+    <!-- 2. MOVIMIENTOS (CON PANEL UNIFICADO DE CUENTAS Y TARJETAS) -->
     <section id="tab-transactions" class="tab-panel">
-      <div class="card" style="padding:11px 14px;">
-        <div class="card-header" style="margin-bottom:0;">
-          <span class="card-title" style="font-size:0.92rem;">🏦 Saldos de Cuentas y Tarjetas (<span id="tx-panel-period"></span>)</span>
+      <div class="card" id="tx-accounts-cards-panel">
+        <div class="card-header" style="margin-bottom:8px;">
+          <span class="card-title">🏦 Saldos de Cuentas y Tarjetas (<span id="tx-panel-period"></span>)</span>
           <div style="display:flex;gap:6px;flex-wrap:wrap;">
-            <button type="button" class="btn btn-xs" id="btn-toggle-tx-cards-panel">👁️ Ocultar Cuentas/Tarjetas</button>
-            <button type="button" class="btn btn-xs" onclick="openVisibilityModal()">⚙️ Configurar visibles</button>
-            <button type="button" class="btn btn-xs" id="btn-clear-tx-method-filter" style="display:none;" onclick="clearTxMethodFilter()">✕ Quitar filtro</button>
+            <button type="button" class="btn btn-sm" id="btn-toggle-tx-cards-panel">👁️ Ocultar Cuentas/Tarjetas</button>
+            <button type="button" class="btn btn-sm" onclick="openVisibilityModal()">⚙️ Configurar visibles</button>
+            <button type="button" class="btn btn-sm btn-warning" id="btn-clear-tx-method-filter" style="display:none;" onclick="clearTxMethodFilter()">✕ Quitar filtro</button>
           </div>
         </div>
 
-        <div id="tx-accounts-cards-body" style="margin-top:10px;">
-          <div class="accounts-strip" id="tx-accounts-strip"></div>
+        <div id="tx-accounts-cards-body">
+          <div id="tx-accounts-strip" class="accounts-strip"></div>
         </div>
       </div>
 
@@ -916,17 +916,25 @@
 
         <div class="card" style="margin-bottom:0;">
           <div class="card-header">
-            <span class="card-title">📈 Intereses Remunerados (<span id="interest-year-label"></span>)</span>
-            <button type="button" class="btn btn-sm btn-primary" id="btn-add-interest-col">+ Añadir Cuenta</button>
+            <span class="card-title">🟦 Cupo de Días Azules (<span id="blue-days-year-label"></span>)</span>
+            <button type="button" class="btn btn-sm btn-primary" id="btn-edit-blue-days">✎ Editar Cupo</button>
           </div>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr id="interest-table-head"></tr>
-              </thead>
-              <tbody id="interest-table-body"></tbody>
-            </table>
-          </div>
+          <div id="blue-days-box"></div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:14px;">
+        <div class="card-header">
+          <span class="card-title">📈 Intereses Remunerados (<span id="interest-year-label"></span>)</span>
+          <button type="button" class="btn btn-sm btn-primary" id="btn-add-interest-col">+ Añadir Cuenta</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr id="interest-table-head"></tr>
+            </thead>
+            <tbody id="interest-table-body"></tbody>
+          </table>
         </div>
       </div>
     </section>
@@ -1102,10 +1110,10 @@
     const NAV_STATE_KEY = "contabilidad_nav_state_v1";
     const THEME_MODE_KEY = "contabilidad_theme_mode_v1";
     const GDRIVE_CLIENT_KEY = "contabilidad_gdrive_client_id";
+    const GDRIVE_HINT_KEY = "contabilidad_gdrive_user_hint";
     const PANEL_VIS_KEY = "contabilidad_panels_visibility_v1";
     const GDRIVE_FILE_NAME = "Contabilidad_Sync.json";
-    const GDRIVE_SCOPE = "https://www.googleapis.com/auth/drive.file";
-
+    const GDRIVE_SCOPE = "https://www.googleapis.com/auth/drive.file email profile";
     const MONTHS_ES = [
       "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
       "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
@@ -1339,6 +1347,7 @@
 
     let tokenClient = null;
     let gdriveAccessToken = null;
+    let gdriveTokenExpiry = 0;
     let gdriveFileId = null;
     let gdriveSyncTimer = null;
 
@@ -1359,17 +1368,17 @@
       safeStorageSet(NAV_STATE_KEY, JSON.stringify({ tab: activeTab, month: selectedMonth, year: selectedYear, scrollY: sy }));
     }
 
-    function persistPanelVisPrefs() {
-      safeStorageSet(PANEL_VIS_KEY, JSON.stringify(panelVis));
-    }
-
-    function restoreScrollPosition() {
-      if (pendingRestoreScrollY > 0) {
-        const target = pendingRestoreScrollY;
-        requestAnimationFrame(() => {
-          window.scrollTo(0, target);
-          setTimeout(() => window.scrollTo(0, target), 120);
-        });
+    function togglePrivacyMode(forceVal = null, silentToast = false) {
+      isPrivacyMasked = typeof forceVal === "boolean" ? forceVal : !isPrivacyMasked;
+      document.body.classList.toggle("privacy-masked", isPrivacyMasked);
+      const btn = document.getElementById("btn-privacy-toggle");
+      if (btn) {
+        btn.textContent = isPrivacyMasked ? "🙈" : "👁️";
+        btn.classList.toggle("btn-warning", isPrivacyMasked);
+      }
+      renderAll();
+      if (!silentToast) {
+        showToast(isPrivacyMasked ? "Importes ocultos" : "Importes visibles");
       }
     }
 
@@ -1388,16 +1397,23 @@
       return n.toLocaleString("es-ES", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " €";
     }
 
-    function togglePrivacyMode(forceVal = null) {
-      isPrivacyMasked = typeof forceVal === "boolean" ? forceVal : !isPrivacyMasked;
-      document.body.classList.toggle("privacy-masked", isPrivacyMasked);
-      const btn = document.getElementById("btn-privacy-toggle");
-      if (btn) {
-        btn.textContent = isPrivacyMasked ? "🙈" : "👁️";
-        btn.classList.toggle("btn-warning", isPrivacyMasked);
+    function persistPanelVisPrefs() {
+      safeStorageSet(PANEL_VIS_KEY, JSON.stringify(panelVis));
+    }
+
+    function restoreScrollPosition() {
+      if (pendingRestoreScrollY > 0) {
+        const y = pendingRestoreScrollY;
+        pendingRestoreScrollY = 0;
+        requestAnimationFrame(() => window.scrollTo(0, y));
       }
-      renderAll();
-      showToast(isPrivacyMasked ? "Importes ocultos" : "Importes visibles");
+    }
+
+    function updateDriveStatus(barText, diagText = null) {
+      const bar = document.getElementById("gdrive-status-text");
+      if (bar && barText) bar.textContent = barText;
+      const diag = document.getElementById("gdrive-diagnostic-box");
+      if (diag && diagText) diag.textContent = diagText;
     }
 
     function applyThemeMode(mode, savePref = false) {
@@ -2490,14 +2506,10 @@
     }
 
     function addInterestColumnPrompt() {
-      const name = prompt("Nombre de la cuenta para intereses (ej. Revolut, Openbank, Sabadell):");
+      const name = prompt("Nombre de la cuenta para intereses (ej. Revolut, Openbank):");
       if (!name || !name.trim()) return;
       const clean = name.trim();
       if (!Array.isArray(state.interestColumns)) state.interestColumns = [];
-      if (state.interestColumns.some(c => c.label.toLowerCase() === clean.toLowerCase())) {
-        showToast("Esa cuenta ya existe en intereses");
-        return;
-      }
       const key = "int_" + Date.now().toString(36);
       state.interestColumns.push({ key, label: clean });
       saveState();
@@ -2584,34 +2596,26 @@
       document.getElementById("tx-modal-backdrop").classList.remove("open");
     }
 
-    function editTx(id) {
+    function editTx(idNum) {
       const yData = getYearData(selectedYear);
-      const row = yData.tx.find(r => Number(r[0]) === Number(id));
+      const row = yData.tx.find(r => Number(r[0]) === Number(idNum));
       if (row) openTxModal(row);
     }
 
-    function deleteTx(id) {
-      const yData = getYearData(selectedYear);
-      const idx = yData.tx.findIndex(r => Number(r[0]) === Number(id));
-      if (idx === -1) return;
+    function deleteTx(idNum) {
       if (!confirm("¿Eliminar este movimiento?")) return;
-      const removed = yData.tx[idx];
-      syncInterestFromTransaction(String(selectedYear), removed[1], removed[2], removed[3], removed[4], removed[7], -1);
-      yData.tx.splice(idx, 1);
+      const yData = getYearData(selectedYear);
+      const row = yData.tx.find(r => Number(r[0]) === Number(idNum));
+      if (row) {
+        syncInterestFromTransaction(String(selectedYear), row[1], row[2], row[3], row[4], row[7], -1);
+      }
+      yData.tx = yData.tx.filter(r => Number(r[0]) !== Number(idNum));
       saveState();
       renderAll();
       showToast("Movimiento eliminado");
     }
 
-    /* GOOGLE DRIVE SYNC */
-    function updateDriveStatus(msg, diagMsg = null) {
-      const el = document.getElementById("gdrive-status-text");
-      if (el) el.textContent = msg;
-      const diag = document.getElementById("gdrive-diagnostic-box");
-      if (diag && diagMsg) diag.textContent = diagMsg;
-    }
-
-    function initGoogleDriveClient(silent = false) {
+    function initGoogleDriveClient(silent = false, forceAccountSelect = false) {
       const clientId = (document.getElementById("gdrive-client-id").value || state.gdriveClientId || safeStorageGet(GDRIVE_CLIENT_KEY) || "").trim();
       if (!clientId) {
         if (!silent) {
@@ -2622,24 +2626,56 @@
       }
       safeStorageSet(GDRIVE_CLIENT_KEY, clientId);
       state.gdriveClientId = clientId;
+
+      if (gdriveAccessToken && Date.now() < gdriveTokenExpiry && !forceAccountSelect) {
+        syncWithGoogleDrive(false);
+        return;
+      }
+
       if (typeof google === "undefined" || !google.accounts || !google.accounts.oauth2) {
         if (!silent) showToast("Cargando librería de Google...");
         return;
       }
-      tokenClient = google.accounts.oauth2.initTokenClient({
+
+      const savedHint = (state.gdriveUserEmail || safeStorageGet(GDRIVE_HINT_KEY) || "").trim();
+      const clientConfig = {
         client_id: clientId,
         scope: GDRIVE_SCOPE,
         callback: async (resp) => {
           if (resp && resp.access_token) {
             gdriveAccessToken = resp.access_token;
+            const expiresInSec = Number(resp.expires_in) || 3500;
+            gdriveTokenExpiry = Date.now() + Math.max(60, expiresInSec - 120) * 1000;
+            fetchGoogleUserEmail(gdriveAccessToken);
             updateDriveStatus("☁️ Drive: Conectado — Sincronizando...", "Conectado. Comprobando Contabilidad_Sync.json...");
             await syncWithGoogleDrive(false);
+          } else if (resp && resp.error && !silent && !forceAccountSelect) {
+            tokenClient.requestAccessToken({ prompt: "select_account" });
           }
         }
-      });
+      };
+      if (savedHint) clientConfig.hint = savedHint;
+
+      tokenClient = google.accounts.oauth2.initTokenClient(clientConfig);
       if (tokenClient) {
-        tokenClient.requestAccessToken({ prompt: silent ? "" : "select_account" });
+        const reqOpts = { prompt: forceAccountSelect ? "select_account" : "" };
+        if (savedHint && !forceAccountSelect) reqOpts.login_hint = savedHint;
+        tokenClient.requestAccessToken(reqOpts);
       }
+    }
+
+    async function fetchGoogleUserEmail(token) {
+      try {
+        const res = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        if (!res.ok) return;
+        const info = await res.json();
+        if (info && info.email) {
+          state.gdriveUserEmail = info.email;
+          safeStorageSet(GDRIVE_HINT_KEY, info.email);
+        }
+      } catch (e) {}
     }
 
     async function findDriveFile() {
@@ -3002,12 +3038,16 @@
       const savedClientId = state.gdriveClientId || safeStorageGet(GDRIVE_CLIENT_KEY);
       if (savedClientId) document.getElementById("gdrive-client-id").value = savedClientId;
 
-      document.getElementById("btn-gdrive-quick").addEventListener("click", () => initGoogleDriveClient(false));
-      document.getElementById("btn-gdrive-connect").addEventListener("click", () => initGoogleDriveClient(false));
+      document.getElementById("btn-gdrive-quick").addEventListener("click", () => initGoogleDriveClient(false, false));
+      document.getElementById("btn-gdrive-connect").addEventListener("click", () => initGoogleDriveClient(false, true));
       document.getElementById("btn-gdrive-pull").addEventListener("click", () => syncWithGoogleDrive(true));
       document.getElementById("btn-gdrive-push").addEventListener("click", () => {
         saveState(false);
-        uploadToGoogleDrive(false);
+        if (!gdriveAccessToken || Date.now() >= gdriveTokenExpiry) {
+          initGoogleDriveClient(false, false);
+        } else {
+          uploadToGoogleDrive(false);
+        }
       });
 
       document.getElementById("btn-header-save-html").addEventListener("click", downloadHtmlCopy);
@@ -3051,11 +3091,21 @@
 
       jumpToLatestDataPeriodIfCurrentEmpty();
       syncPeriodSelectors();
+      togglePrivacyMode(true, true);
       switchTab(activeTab, true);
       restoreScrollPosition();
 
+      window.addEventListener("pageshow", () => {
+        togglePrivacyMode(true, true);
+      });
+      document.addEventListener("visibilitychange", () => {
+        if (document.hidden) {
+          togglePrivacyMode(true, true);
+        }
+      });
+
       if (savedClientId) {
-        setTimeout(() => initGoogleDriveClient(true), 900);
+        setTimeout(() => initGoogleDriveClient(true, false), 900);
       }
     });
   </script>
