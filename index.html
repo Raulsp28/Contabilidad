@@ -522,6 +522,29 @@
     }
     .toast.show { opacity: 1; transform: translateY(0); }
 
+    /* PANTALLA DE BLOQUEO POR CONTRASEÑA */
+    .lock-screen {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: var(--bg);
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .lock-screen.open { display: flex; }
+    .lock-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px 20px;
+      width: 100%;
+      max-width: 360px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+      text-align: center;
+    }
+
     @media (max-width: 900px) {
       .grid-4 { grid-template-columns: repeat(2, 1fr); }
       .grid-3 { grid-template-columns: 1fr; }
@@ -540,6 +563,22 @@
 </head>
 <body class="privacy-masked">
 
+  <!-- PANTALLA DE BLOQUEO POR CONTRASEÑA -->
+  <div id="app-lock-screen" class="lock-screen">
+    <div class="lock-card">
+      <div class="brand-badge" style="width:44px;height:44px;font-size:1.3rem;margin:0 auto 10px;">🔒</div>
+      <h3 style="margin-bottom:4px;">Contabilidad Protegida</h3>
+      <p class="text-muted" style="font-size:0.84rem;margin-bottom:16px;">Introduce tu contraseña para desbloquear la aplicación.</p>
+      <form id="unlock-form">
+        <div class="form-group" style="text-align:left;">
+          <input type="password" id="unlock-password-input" placeholder="Contraseña..." autocomplete="current-password" required style="width:100%;padding:10px 12px;font-size:1rem;" />
+        </div>
+        <div id="unlock-error-msg" class="text-danger" style="font-size:0.8rem;min-height:18px;margin-bottom:8px;"></div>
+        <button type="submit" class="btn btn-primary" style="width:100%;padding:10px;font-size:0.95rem;">Desbloquear</button>
+      </form>
+    </div>
+  </div>
+
   <!-- CABECERA PRINCIPAL COMPACTA A LA IZQUIERDA -->
   <header class="topbar">
     <div class="topbar-left">
@@ -554,6 +593,7 @@
 
     <div class="topbar-right">
       <button type="button" id="btn-privacy-toggle" class="btn btn-sm btn-warning" title="Mostrar u ocultar importes">🙈</button>
+      <button type="button" id="btn-lock-now" class="btn btn-sm" style="display:none;" title="Bloquear app ahora">🔒</button>
       <button type="button" id="btn-open-new-tx" class="btn btn-primary btn-sm" title="Nuevo Movimiento">+ <span class="btn-label-hide">Movimiento</span></button>
       <button type="button" id="btn-gdrive-quick" class="btn btn-sm btn-accent" title="Sincronizar con Google Drive">☁️ <span class="btn-label-hide">Drive</span></button>
       <button type="button" id="btn-theme-toggle" class="btn btn-sm" title="Tema (Auto / Claro / Oscuro)">🌓</button>
@@ -977,6 +1017,38 @@
           </div>
         </div>
       </div>
+
+      <div class="card" style="margin-top:14px;">
+        <div class="card-header">
+          <span class="card-title">🔒 Seguridad y Contraseña de Acceso</span>
+          <span id="security-status-badge" class="badge badge-tag">Sin contraseña</span>
+        </div>
+        <p class="text-muted" style="font-size:0.84rem;margin-bottom:12px;">
+          Protege el acceso a tu contabilidad con una contraseña. Se guarda cifrada (SHA-256) y se sincroniza con Google Drive.
+        </p>
+        <form id="security-settings-form" style="max-width:440px;">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Nueva Contraseña / PIN</label>
+              <input type="password" id="sec-new-password" placeholder="Escribe contraseña..." autocomplete="new-password" />
+            </div>
+            <div class="form-group">
+              <label>Confirmar Contraseña</label>
+              <input type="password" id="sec-confirm-password" placeholder="Repite contraseña..." autocomplete="new-password" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label style="display:flex;align-items:center;gap:7px;cursor:pointer;">
+              <input type="checkbox" id="sec-lock-on-hide" checked />
+              Bloquear automáticamente al minimizar o salir de la app
+            </label>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;">
+            <button type="submit" class="btn btn-primary">Guardar Contraseña</button>
+            <button type="button" class="btn btn-danger" id="btn-remove-password" style="display:none;">Quitar Contraseña</button>
+          </div>
+        </form>
+      </div>
     </section>
   </main>
 
@@ -1350,6 +1422,63 @@
     let gdriveTokenExpiry = 0;
     let gdriveFileId = null;
     let gdriveSyncTimer = null;
+    let isAppUnlocked = false;
+
+    async function hashPasswordSha256(plainText) {
+      const msgBuffer = new TextEncoder().encode(String(plainText));
+      if (window.crypto && window.crypto.subtle) {
+        const hashBuffer = await window.crypto.subtle.digest("SHA-256", msgBuffer);
+        return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, "0")).join("");
+      }
+      let h = 0;
+      for (let i = 0; i < plainText.length; i++) {
+        h = ((h << 5) - h) + plainText.charCodeAt(i);
+        h |= 0;
+      }
+      return "fallback_" + Math.abs(h).toString(16);
+    }
+
+    function hasConfiguredPassword() {
+      return Boolean(state && state.security && state.security.hash);
+    }
+
+    function lockAppScreen() {
+      if (!hasConfiguredPassword()) return;
+      isAppUnlocked = false;
+      const screen = document.getElementById("app-lock-screen");
+      const inp = document.getElementById("unlock-password-input");
+      const err = document.getElementById("unlock-error-msg");
+      if (err) err.textContent = "";
+      if (inp) inp.value = "";
+      if (screen) {
+        screen.classList.add("open");
+        setTimeout(() => inp && inp.focus(), 60);
+      }
+    }
+
+    function unlockAppScreen() {
+      isAppUnlocked = true;
+      const screen = document.getElementById("app-lock-screen");
+      if (screen) screen.classList.remove("open");
+    }
+
+    function renderSecuritySettings() {
+      const hasPwd = hasConfiguredPassword();
+      const badge = document.getElementById("security-status-badge");
+      const removeBtn = document.getElementById("btn-remove-password");
+      const lockNowBtn = document.getElementById("btn-lock-now");
+      const lockOnHideChk = document.getElementById("sec-lock-on-hide");
+
+      if (badge) {
+        badge.textContent = hasPwd ? "Protegida con contraseña" : "Sin contraseña";
+        badge.style.color = hasPwd ? "var(--success)" : "";
+      }
+      if (removeBtn) removeBtn.style.display = hasPwd ? "inline-flex" : "none";
+      if (lockNowBtn) lockNowBtn.style.display = hasPwd ? "inline-flex" : "none";
+      if (lockOnHideChk && state.security) {
+        lockOnHideChk.checked = state.security.lockOnHide !== false;
+      }
+    }
 
     function getTotalTxCount(st = state) {
       if (!st || !st.years) return 0;
@@ -2723,6 +2852,7 @@
           syncPeriodSelectors();
           renderAll();
           restoreScrollPosition();
+          if (hasConfiguredPassword() && !isAppUnlocked) lockAppScreen();
           updateDriveStatus(
             `☁️ Drive: Sincronizado (${remoteTxTotal} mov.)`,
             `Leído ${file.name}: ${remoteTxTotal} movimientos y ${(state.accountKeys || []).length} cuentas.`
@@ -2805,12 +2935,89 @@
       renderCardsAndMethods();
       renderAnnualAndCategories();
       renderGoalsAndInterests();
+      renderSecuritySettings();
     }
 
     /* INICIALIZACIÓN */
     document.addEventListener("DOMContentLoaded", () => {
       const savedTheme = safeStorageGet(THEME_MODE_KEY) || "system";
       applyThemeMode(savedTheme, false);
+
+      if (hasConfiguredPassword()) {
+        lockAppScreen();
+      } else {
+        isAppUnlocked = true;
+      }
+
+      document.getElementById("unlock-form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const inp = document.getElementById("unlock-password-input");
+        const err = document.getElementById("unlock-error-msg");
+        const val = inp.value || "";
+        if (!hasConfiguredPassword()) {
+          unlockAppScreen();
+          return;
+        }
+        const hashed = await hashPasswordSha256(val);
+        if (hashed === state.security.hash) {
+          unlockAppScreen();
+          showToast("Aplicación desbloqueada");
+        } else {
+          err.textContent = "Contraseña incorrecta. Inténtalo de nuevo.";
+          inp.value = "";
+          inp.focus();
+        }
+      });
+
+      document.getElementById("btn-lock-now").addEventListener("click", () => {
+        togglePrivacyMode(true, true);
+        lockAppScreen();
+      });
+
+      document.getElementById("security-settings-form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const p1 = document.getElementById("sec-new-password").value;
+        const p2 = document.getElementById("sec-confirm-password").value;
+        const lockOnHide = document.getElementById("sec-lock-on-hide").checked;
+
+        if (!p1 && hasConfiguredPassword()) {
+          state.security.lockOnHide = lockOnHide;
+          saveState();
+          renderSecuritySettings();
+          showToast("Preferencia de bloqueo actualizada");
+          return;
+        }
+
+        if (!p1 || p1.length < 4) {
+          showToast("La contraseña debe tener al menos 4 caracteres");
+          return;
+        }
+        if (p1 !== p2) {
+          showToast("Las contraseñas no coinciden");
+          return;
+        }
+
+        const hash = await hashPasswordSha256(p1);
+        state.security = {
+          hash,
+          lockOnHide,
+          updatedAt: new Date().toISOString()
+        };
+        isAppUnlocked = true;
+        document.getElementById("sec-new-password").value = "";
+        document.getElementById("sec-confirm-password").value = "";
+        saveState();
+        renderSecuritySettings();
+        showToast("Contraseña guardada correctamente");
+      });
+
+      document.getElementById("btn-remove-password").addEventListener("click", () => {
+        state.security = null;
+        isAppUnlocked = true;
+        saveState();
+        renderSecuritySettings();
+        showToast("Contraseña eliminada");
+      });
 
       document.getElementById("btn-theme-toggle").addEventListener("click", () => {
         const cur = safeStorageGet(THEME_MODE_KEY) || "system";
@@ -3097,10 +3304,16 @@
 
       window.addEventListener("pageshow", () => {
         togglePrivacyMode(true, true);
+        if (hasConfiguredPassword() && (!state.security || state.security.lockOnHide !== false)) {
+          lockAppScreen();
+        }
       });
       document.addEventListener("visibilitychange", () => {
         if (document.hidden) {
           togglePrivacyMode(true, true);
+          if (hasConfiguredPassword() && (!state.security || state.security.lockOnHide !== false)) {
+            lockAppScreen();
+          }
         }
       });
 
